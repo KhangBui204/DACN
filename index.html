@@ -60,14 +60,14 @@
 <!-- MENU -->
 <nav class="menu">
     <div class="home-icon">
-        <i class="material-symbols-outlined">home_health</i>
+        <a href="index.html"><i class="material-symbols-outlined">home_health</i></a>
     </div>
-    <a href="#">GIỚI THIỆU</a>
-    <a href="#">TIÊM CHỦNG</a>
-    <a href="#">GIÁO DỤC SỨC KHỎE</a>
-    <a href="#">PHÒNG CHỐNG DỊCH BỆNH</a>
-    <a href="#">CHĂM SÓC TRẺ EM</a>
-    <a href="#">TIN TỨC</a>
+    <a href="pages/gioi-thieu.html">GIỚI THIỆU</a>
+    <a href="pages/tiem-chung.html">TIÊM CHỦNG</a>
+    <a href="pages/giao-duc-suc-khoe.html">GIÁO DỤC SỨC KHỎE</a>
+    <a href="pages/phong-chong-dich-benh.html">PHÒNG CHỐNG DỊCH BỆNH</a>
+    <a href="pages/cham-soc-tre-em.html">CHĂM SÓC TRẺ EM</a>
+    <a href="pages/tin-tuc.html">TIN TỨC</a>
 
 </nav>
 
@@ -75,18 +75,59 @@
 <!-- MAIN -->
 <div class="container">
 
-<!-- LEFT BUTTON -->
-<div class="left-buttons">
+<div class="left-column">
+<!-- APPOINTMENT FORM -->
+<aside class="appointment-form">
+    <div class="form-header">
+        <h3>ĐẶT LỊCH KHÁM</h3>
+    </div>
+    <form class="form-content">
+        <div class="form-group">
+            <label for="name">Họ tên</label>
+            <input type="text" id="name" name="name" placeholder="Nhập họ và tên...">
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại...">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Nhập email...">
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Chọn ngày</label>
+            <div class="input-wrapper">
+                <input type="date" id="date" name="date">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="time">Chọn giờ</label>
+            <div class="input-wrapper">
+                <input type="time" id="time" name="time">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-submit">ĐẶT LỊCH</button>
+    </form>
+</aside>
 
-<button>Tin tức</button>
-<button>Thông báo</button>
-<button>Thư mời</button>
-
+<!-- NOTICE -->
+<div class="notice">
+    <h3>THÔNG BÁO</h3>
+    <ul>
+        <li>LỊCH TIÊM CHỦNG NĂM 2024</li>
+    </ul>
 </div>
-
+</div>
 
 <!-- MAIN CONTENT -->
 <div class="content">
+
+    
 
 <!-- SLIDE -->
 <div class="main-slide" id="slideText">
@@ -148,19 +189,56 @@ CHĂM SÓC MẸ VÀ BÉ
 </div>
 
 
-<!-- THÔNG BÁO -->
-<div class="notice">
-
-<h3>THÔNG BÁO</h3>
-
-<ul>
-<li>LỊCH TIÊM CHỦNG NĂM 2024</li>
-</ul>
+<div class="doctors-section">
+    <h3>BÁC SĨ CỦA CHÚNG TÔI</h3>
+    <div class="doctor-row">
+        <div class="doctor-card">
+            <img src="" alt="Bác sĩ Nguyễn Văn Toàn">
+            <h4>BS. Nguyễn Văn Toàn</h4>
+            <p>Chuyên khoa: Nội</p>
+            <p>Làm việc: T2 - T6</p>
+        </div>
+        <div class="doctor-card">
+            <img src="" alt="Bác sĩ Trần Thị Bích">
+            <h4>BS. Trần Thị Bích</h4>
+            <p>Chuyên khoa: Nhi</p>
+            <p>Làm việc: T2 - T6</p>
+        </div>
+        <div class="doctor-card">
+            <img src="" alt="Bác sĩ Lê Thị Cẩm">
+            <h4>BS. Lê Thị Cẩm</h4>
+            <p>Chuyên khoa: Sản</p>
+            <p>Làm việc: T2 - T6</p>
+        </div>
+    </div>
+</div>
 
 </div>
 
-
-</div>
+<aside class="news-panel">
+    <div class="news-panel-header">
+        <h3>TIN MỚI</h3>
+    </div>
+    <ul class="news-list">
+        <li><strong>01.</strong> Khai trương phòng khám mới tại phường 10</li>
+        <li><strong>02.</strong> Tư vấn miễn phí tiêm chủng mùa hè</li>
+        <li><strong>03.</strong> Lịch khám sức khỏe định kỳ cho dân cư</li>
+        <li><strong>04.</strong> Hướng dẫn phòng chống sốt xuất huyết</li>
+        <li><strong>05.</strong> Chương trình khám nha miễn phí cho trẻ em</li>
+        <li><strong>06.</strong> Hội thảo dinh dưỡng cho người cao tuổi</li>
+        <li><strong>07.</strong> Khuyến cáo tiêm mũi nhắc lại COVID-19</li>
+        <li><strong>08.</strong> Mở đăng ký tiêm vắc xin cúm mùa</li>
+        <li><strong>09.</strong> Tư vấn sức khỏe tâm thần cộng đồng</li>
+    </ul>
+    <div class="schedule-box">
+        <h3>LỊCH TIÊM CHỦNG THÁNG 4</h3>
+        <ul>
+            <li>10/04: Tiêm vaccine cho trẻ em</li>
+            <li>15/04: Tiêm vaccine cúm</li>
+            <li>20/04: Tiêm vaccine cho người cao tuổi</li>
+        </ul>
+    </div>
+</aside>
 
 </div>
 

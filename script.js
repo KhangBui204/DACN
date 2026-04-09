@@ -45,49 +45,69 @@ window.addEventListener("load", () => {
     const slideContent = document.getElementById("slideContent");
     const mainSlide = document.getElementById("slideText");
 
-    if (!thumbs.length) return;
+    // Lấy ảnh và tiêu đề từ thumbnail đầu tiên
+    if (thumbs.length > 0) {
+        const firstThumb = thumbs[0];
+        const firstImgSrc = firstThumb.querySelector("img").src;
+        const firstText = firstThumb.querySelector("p").innerText;
 
-    const firstThumb = thumbs[0];
-    const defaultImg = firstThumb.querySelector("img").src;
-    const defaultTitle = firstThumb.querySelector("p").innerText;
-    const defaultDesc = `Thông tin chi tiết về: ${defaultTitle}`;
-
-    mainImage.src = defaultImg;
-    mainImage.style.display = "block";
-    slideContent.innerHTML = `
-        <h2>${defaultTitle}</h2>
-        <p>${defaultDesc}</p>
-    `;
-    mainSlide.style.background = "white";
+        mainImage.src = firstImgSrc;
+        mainImage.style.display = "block";
+        slideContent.innerHTML = `
+            <h2>${firstText}</h2>
+            <p>Thông tin chi tiết về ${firstText}</p>
+        `;
+    }
 
     thumbs.forEach(thumb => {
         thumb.addEventListener("mouseenter", () => {
-            const imgSrc = thumb.querySelector("img").src;
-            const text = thumb.querySelector("p").innerText;
+    const imgSrc = thumb.querySelector("img").src;
+    const text = thumb.querySelector("p").innerText;
 
-            // Hiện ảnh thumbnail lên main-slide
-            mainImage.src = imgSrc;
-            mainImage.style.display = "block";
+    mainImage.src = imgSrc;
+    mainImage.style.display = "block";
 
-            // Hiện nội dung tương ứng
-            slideContent.innerHTML = `
-                <h2>${text}</h2>
-                <p>Thông tin chi tiết về: ${text}</p>
-            `;
-
-            mainSlide.style.background = "white";
-        });
+    slideContent.innerHTML = `
+        <h2>${text}</h2>
+        <p>Thông tin chi tiết về ${text}</p>
+    `;
+});
 
         thumb.addEventListener("mouseleave", () => {
-            // Trả về thumbnail đầu tiên
-            mainImage.src = defaultImg;
-            mainImage.style.display = "block";
-            slideContent.innerHTML = `
-                <h2>${defaultTitle}</h2>
-                <p>${defaultDesc}</p>
-            `;
-
-            mainSlide.style.background = "white";
-        });
+    // Quay lại thumbnail đầu tiên khi rời chuột
+    if (thumbs.length > 0) {
+        const firstThumb = thumbs[0];
+        const firstImgSrc = firstThumb.querySelector("img").src;
+        const firstText = firstThumb.querySelector("p").innerText;
+        
+        mainImage.src = firstImgSrc;
+        mainImage.style.display = "block";
+        slideContent.innerHTML = `
+            <h2>${firstText}</h2>
+            <p>Thông tin chi tiết về ${firstText}</p>
+        `;
+    }
+});
     });
+
+    const dateInput = document.querySelector('input[type="date"]');
+    const timeInput = document.querySelector('input[type="time"]');
+
+    const disableKeyboardEntry = (input) => {
+        if (!input) return;
+        input.addEventListener('keydown', (e) => {
+            const allowKeys = ['Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'];
+            if (!allowKeys.includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+        input.addEventListener('keypress', (e) => {
+            e.preventDefault();
+        });
+        input.addEventListener('paste', (e) => e.preventDefault());
+        input.addEventListener('drop', (e) => e.preventDefault());
+    };
+
+    disableKeyboardEntry(dateInput);
+    disableKeyboardEntry(timeInput);
 });
