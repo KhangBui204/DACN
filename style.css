@@ -112,6 +112,161 @@ outline:3px solid rgba(66,165,245,0.45);
 outline-offset:2px;
 }
 
+.modal-open{
+overflow:hidden;
+}
+
+.auth-modal{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,0.45);
+opacity:0;
+visibility:hidden;
+pointer-events:none;
+transition:opacity 0.25s ease, visibility 0.25s ease;
+z-index:1200;
+}
+
+.auth-modal.is-open{
+opacity:1;
+visibility:visible;
+pointer-events:auto;
+}
+
+.auth-modal__dialog{
+position:relative;
+width:min(92vw,430px);
+background:#fff;
+border-radius:16px;
+padding:24px;
+box-shadow:0 16px 40px rgba(0,0,0,0.24);
+transform:translateY(12px);
+transition:transform 0.25s ease;
+}
+
+.auth-modal.is-open .auth-modal__dialog{
+transform:translateY(0);
+}
+
+.auth-modal__close{
+position:absolute;
+top:10px;
+right:12px;
+border:none;
+background:transparent;
+font-size:28px;
+line-height:1;
+color:#6a7380;
+cursor:pointer;
+}
+
+.auth-modal h3{
+margin:0;
+font-size:24px;
+color:#0d47a1;
+}
+
+.auth-modal p{
+margin:10px 0 16px;
+color:#4f5b67;
+font-size:14px;
+}
+
+.auth-form{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.auth-form label{
+font-weight:600;
+font-size:13px;
+color:#243648;
+}
+
+.auth-form input{
+border:1px solid #cfd8e3;
+border-radius:10px;
+padding:10px 12px;
+font-size:14px;
+outline:none;
+transition:border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-form input:focus{
+border-color:#1976d2;
+box-shadow:0 0 0 3px rgba(25,118,210,0.15);
+}
+
+.auth-btn{
+border:none;
+border-radius:10px;
+padding:10px 12px;
+font-weight:600;
+font-size:14px;
+cursor:pointer;
+transition:transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.auth-btn:hover{
+transform:translateY(-1px);
+box-shadow:0 8px 16px rgba(0,0,0,0.12);
+}
+
+.auth-btn--primary{
+margin-top:6px;
+background:linear-gradient(135deg,#1e88e5,#1565c0);
+color:#fff;
+}
+
+.auth-divider{
+display:flex;
+align-items:center;
+margin:14px 0;
+color:#7b8895;
+font-size:12px;
+}
+
+.auth-divider::before,
+.auth-divider::after{
+content:"";
+flex:1;
+height:1px;
+background:#dce3eb;
+}
+
+.auth-divider span{
+padding:0 10px;
+}
+
+.auth-actions{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.auth-btn--google{
+background:#fff;
+color:#1f2937;
+border:1px solid #dadce0;
+}
+
+.auth-btn--google:hover{
+background:#f8fafc;
+}
+
+.auth-btn--register{
+background:#eef6ff;
+color:#0d47a1;
+}
+
+.auth-btn--register:hover{
+background:#deefff;
+}
+
 
 #time{
     display: flex;

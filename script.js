@@ -6,6 +6,44 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
+const loginBtn = document.querySelector(".login");
+const authModal = document.getElementById("authModal");
+const closeAuthModalBtn = document.getElementById("closeAuthModal");
+
+function openAuthModal() {
+    if (!authModal) return;
+    authModal.classList.add("is-open");
+    authModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+}
+
+function closeAuthModal() {
+    if (!authModal) return;
+    authModal.classList.remove("is-open");
+    authModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+}
+
+if (loginBtn && authModal) {
+    loginBtn.addEventListener("click", openAuthModal);
+
+    if (closeAuthModalBtn) {
+        closeAuthModalBtn.addEventListener("click", closeAuthModal);
+    }
+
+    authModal.addEventListener("click", (event) => {
+        if (event.target === authModal) {
+            closeAuthModal();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && authModal.classList.contains("is-open")) {
+            closeAuthModal();
+        }
+    });
+}
+
 function scrollThumb(dir) {
     const row = document.getElementById("thumbRow");
     const card = row.querySelector(".thumb").offsetWidth + 10;
