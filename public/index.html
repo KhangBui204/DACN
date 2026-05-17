@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trạm Y Tế</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+
+<!-- Popup đăng nhập -->
+<div id="popup-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
+  <div style="background:white; width:380px; margin:100px auto; padding:40px; border-radius:12px; text-align:center; position:relative;">
+    
+    <!-- Nút đóng -->
+    <span id="popup-close" style="position:absolute; top:16px; right:20px; cursor:pointer; font-size:20px; color:gray;">✕</span>
+
+    <h2 style="margin-bottom:24px;">Đăng nhập</h2>
+
+    <!-- Đổi id="email" thành id="login-email" -->
+    <input id="login-email" type="email" placeholder="Email" ...>
+
+    <!-- Đổi id="password" thành id="login-password" -->
+    <input id="login-password" type="password" placeholder="Mật khẩu" ...>  
+    
+    <!-- Thông báo lỗi -->
+    <p id="error-msg" style="color:red; font-size:13px; min-height:18px;"></p>
+
+    <!-- Nút đăng nhập -->
+    <button id="btn-email-login" style="width:100%; padding:12px; margin:6px 0; background:#1a73e8; color:white; border:none; border-radius:8px; cursor:pointer; font-size:15px;">Đăng nhập</button>
+    
+    <!-- Nút đăng ký -->
+    <button id="btn-register" style="width:100%; padding:12px; margin:6px 0; background:white; color:#1a73e8; border:1px solid #1a73e8; border-radius:8px; cursor:pointer; font-size:15px;">Đăng ký tài khoản mới</button>
+
+    <div style="margin:16px 0; color:#aaa;">── hoặc ──</div>
+
+    <!-- Nút Google -->
+    <button id="btn-google" style="width:100%; padding:12px; margin:6px 0; background:white; border:1px solid #ddd; border-radius:8px; cursor:pointer; font-size:15px;">
+    Đăng nhập bằng Google
+    </button>
+
+
+  </div>
+</div>
+
+<!-- Popup đăng ký -->
+<div id="popup-register" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
+  <div style="background:white; width:380px; margin:100px auto; padding:40px; border-radius:12px; text-align:center; position:relative;">
+    
+    <!-- Nút đóng -->
+    <span id="register-close" style="position:absolute; top:16px; right:20px; cursor:pointer; font-size:20px; color:gray;">✕</span>
+
+    <h2 style="margin-bottom:24px;">Đăng ký tài khoản</h2>
+
+    <!-- Họ tên -->
+    <input id="register-name" type="text" placeholder="Họ và tên" style="width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+
+    <!-- Email -->
+    <input id="register-email" type="email" placeholder="Email" style="width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+
+    <!-- Mật khẩu -->
+    <input id="register-password" type="password" placeholder="Mật khẩu" style="width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+
+    <!-- Xác nhận mật khẩu -->
+    <input id="register-confirm" type="password" placeholder="Xác nhận mật khẩu" style="width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+
+    <!-- Thông báo lỗi -->
+    <p id="register-error" style="color:red; font-size:13px; min-height:18px;"></p>
+
+    <!-- Nút đăng ký -->
+    <button id="btn-submit-register" style="width:100%; padding:12px; margin:6px 0; background:#1a73e8; color:white; border:none; border-radius:8px; cursor:pointer; font-size:15px;">Đăng ký</button>
+
+    <!-- Quay lại đăng nhập -->
+    <p style="margin-top:16px; font-size:14px;">Đã có tài khoản? 
+      <span id="back-to-login" style="color:#1a73e8; cursor:pointer;">Đăng nhập</span>
+    </p>
+
+  </div>
+</div>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    
+    <span id="time"></span>
+
+    <input class="search" type="text" placeholder="Từ khóa tìm kiếm" data-i18n-placeholder="search_placeholder"/>
+
+    <button class="login" type="button"><span data-i18n="btn_login">Đăng nhập</span></button>
+
+</div>
+
+
+<!-- HEADER -->
+<header class="header">
+
+    <img class="banner" src="../img/anh-mo-ta.jpg" alt="Mô tả trạm y tế" >
+
+<div class="logo-box">
+
+    <a class="logo" href="index.html">
+        <img src="../img/Ministry_of_Health_(Vietnam)_Logo.svg.png" alt="Logo BỘ Y TẾ" width="150" height="150">
+    </a>
+
+    <a class="title" href="index.html" style="text-decoration: none; text-align: center;">
+        <h3 data-i18n="header_sub">TRANG THÔNG TIN ĐIỆN TỬ</h3>
+        <h2 data-i18n="header_title" style="color: yellow;">TRẠM Y TẾ PHƯỜNG 10</h2>
+    </a>
+
+</div>
+
+
+</header>
+
+
+<!-- MENU -->
+<nav class="menu">
+    <a href="index.html" class="home-icon">
+        <i class="material-symbols-outlined">home_health</i>
+    </a>
+    <a class="menu_about" href="pages/gioi-thieu.html">GIỚI THIỆU</a>
+    <a class="menu_vaccine" href="pages/tiem-chung.html">TIÊM CHỦNG</a>
+    <a class="menu_health" href="pages/giao-duc-suc-khoe.html">GIÁO DỤC SỨC KHOẺ</a>
+    <a class="menu_disease" href="pages/phong-chong-dich-benh.html">PHÒNG CHỐNG DỊCH BỆNH</a>
+    <a class="menu_child" href="pages/cham-soc-tre-em.html">CHĂM SÓC TRẺ EM</a>
+
+    <div class="lang">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="24" height="24"  style="opacity:1;"><path fill="#da251d" d="M32 5H4a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h28a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4"/><path fill="#ff0" d="M19.753 16.037L18 10.642l-1.753 5.395h-5.672l4.589 3.333l-1.753 5.395L18 21.431l4.589 3.334l-1.753-5.395l4.589-3.333z"/></svg>
+        <button class="VN" >VI</button>
+        <span>|</span>
+        <button class="EN">EN</button>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="24" height="24"  style="opacity:1;"><path fill="#00247d" d="M0 9.059V13h5.628zM4.664 31H13v-5.837zM23 25.164V31h8.335zM0 23v3.941L5.63 23zM31.337 5H23v5.837zM36 26.942V23h-5.631zM36 13V9.059L30.371 13zM13 5H4.664L13 10.837z"/><path fill="#cf1b2b" d="m25.14 23l9.712 6.801a4 4 0 0 0 .99-1.749L28.627 23zM13 23h-2.141l-9.711 6.8c.521.53 1.189.909 1.938 1.085L13 23.943zm10-10h2.141l9.711-6.8a4 4 0 0 0-1.937-1.085L23 12.057zm-12.141 0L1.148 6.2a4 4 0 0 0-.991 1.749L7.372 13z"/><path fill="#eee" d="M36 21H21v10h2v-5.836L31.335 31H32a4 4 0 0 0 2.852-1.199L25.14 23h3.487l7.215 5.052c.093-.337.158-.686.158-1.052v-.058L30.369 23H36zM0 21v2h5.63L0 26.941V27c0 1.091.439 2.078 1.148 2.8l9.711-6.8H13v.943l-9.914 6.941c.294.07.598.116.914.116h.664L13 25.163V31h2V21zM36 9a3.98 3.98 0 0 0-1.148-2.8L25.141 13H23v-.943l9.915-6.942A4 4 0 0 0 32 5h-.663L23 10.837V5h-2v10h15v-2h-5.629L36 9.059zM13 5v5.837L4.664 5H4a4 4 0 0 0-2.852 1.2l9.711 6.8H7.372L.157 7.949A4 4 0 0 0 0 9v.059L5.628 13H0v2h15V5z"/><path fill="#cf1b2b" d="M21 15V5h-6v10H0v6h15v10h6V21h15v-6z"/></svg>
+    </div>
+
+</nav>
+
+
+
+<!-- MAIN -->
+<div class="container">
+
+<div class="left-column">
+<!-- APPOINTMENT FORM -->
+<aside class="appointment-form">
+    <div class="form-header">
+        <h3>ĐẶT LỊCH KHÁM</h3>
+    </div>
+    <form class="form-content">
+        <div class="form-group">
+            <select id="family" name="family">
+                <option value="">-- Chọn --</option>
+                <option value="self">Bản thân</option>
+                <option value="spouse">Vợ/chồng</option>
+                <option value="child">Con cái</option>
+                <option value="parent">Cha mẹ</option>
+                <option value="siblings">Anh/chị</option>
+            </select>
+        </div>
+        <div class="form-group">
+           <label for="name" data-i18n="form_name">Họ tên</label>
+            <input type="text" id="name" placeholder="Nhập họ và tên..." data-i18n-placeholder="form_name_placeholder">
+        </div>
+        
+        <div class="form-group">
+            <label for="phone" data-i18n="form_phone">Số điện thoại</label>
+            <input type="tel" id="phone" placeholder="Nhập số điện thoại..." data-i18n-placeholder="form_phone_placeholder">
+        </div>
+        
+        <div class="form-group">
+            <label for="email" data-i18n="form_email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Nhập email..." data-i18n-placeholder="form_email_placeholder">
+        </div>
+        
+        <div class="form-group">
+            <label for="date" data-i18n="form_date">Chọn ngày</label>
+            <div class="input-wrapper">
+                <input type="date" id="date" name="date">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="time" data-i18n="form_time">Chọn giờ</label>
+            <div class="input-wrapper">
+                <input type="time" id="time" name="time">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-submit" data-i18n="form_submit">ĐẶT LỊCH</button>
+    </form>
+</aside>
+
+<!-- NOTICE -->
+<div class="notice">
+    <h3 data-i18n="notice_title">THÔNG BÁO</h3>
+    <ul>
+        <li data-i18n="notice_1">LỊCH TIÊM CHỦNG NĂM 2024</li>
+    </ul>
+</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+    
+
+<!-- SLIDE -->
+<div class="main-slide" id="slideText">
+<img id="mainImage" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:6px;">
+<div id="slideContent">
+CHĂM SÓC MẸ VÀ BÉ
+<br>
+<span>Tư vấn dinh dưỡng và lịch khám thai đầy đủ.</span>
+</div>
+</div>
+
+
+<!-- THUMB NEWS -->
+<div class="thumb-wrapper">
+
+<button class="arrow" onclick="scrollThumb(-1)">❮</button>
+
+<div class="thumb-row" id="thumbRow">
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d">
+<p>Khám sức khỏe định kỳ cho người cao tuổi</p>
+</div>
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1584515933487-779824d29309">
+<p>Phòng chống sốt xuất huyết mùa mưa</p>
+</div>
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1585435557343-3b092031a831">
+<p>Lịch tiêm chủng trẻ em tháng này</p>
+</div>
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118">
+<p>Dinh dưỡng cho người bệnh tiểu đường</p>
+</div>
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1584744982491-665216d95f8b">
+<p>Khuyến cáo đeo khẩu trang</p>
+</div>
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1579154204601-01588f351e67">
+<p>Tầm soát ung thư sớm</p>
+</div>
+
+<div class="thumb">
+<img src="https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b">
+<p>Chăm sóc sức khỏe mẹ và bé</p>
+</div>
+
+</div>
+
+<button class="arrow right" onclick="scrollThumb(1)">❯</button>
+
+</div>
+
+
+<div class="doctors-section">
+    <h3 data-i18n="doctors_title">BÁC SĨ CỦA CHÚNG TÔI</h3>
+    <div class="doctor-row">
+        <div class="doctor-card">
+            <img src="" alt="Bác sĩ Nguyễn Văn Toàn">
+            <h4>BS. Nguyễn Văn Toàn</h4>
+            <p data-i18n="doctor_specialty_1">Chuyên khoa: Nội</p>
+            <p data-i18n="doctor_work">Làm việc: T2 - T6</p>
+        </div>
+        <div class="doctor-card">
+            <img src="" alt="Bác sĩ Trần Thị Bích">
+            <h4>BS. Trần Thị Bích</h4>
+            <p data-i18n="doctor_specialty_1">Chuyên khoa: Nhi</p>
+            <p data-i18n="doctor_work">Làm việc: T2 - T6</p>
+        </div>
+        <div class="doctor-card">
+            <img src="" alt="Bác sĩ Lê Thị Cẩm">
+            <h4>BS. Lê Thị Cẩm</h4>
+            <p data-i18n="doctor_specialty_1">Chuyên khoa: Sản</p>
+            <p data-i18n="doctor_work">Làm việc: T2 - T6</p>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<aside class="news-panel">
+    <div class="news-panel-header">
+        <h3>TIN MỚI</h3>
+    </div>
+    <ul class="news-list">
+        <h3 data-i18n="news_title">TIN MỚI</h3>
+        <li data-i18n="news_1">Khai trương phòng khám mới tại phường 10</li>
+        <li data-i18n="news_2">Tư vấn miễn phí tiêm chủng mùa hè</li>
+        <li data-i18n="news_3">Lịch khám sức khỏe định kỳ cho dân cư</li>
+        <li data-i18n="news_4">Hướng dẫn phòng chống sốt xuất huyết</li>
+        <li data-i18n="news_5">Chương trình khám nha miễn phí cho trẻ em</li>
+        <li data-i18n="news_6">Hội thảo dinh dưỡng cho người cao tuổi</li>
+        <li data-i18n="news_7">Khuyến cáo tiêm mũi nhắc lại COVID-19</li>
+        <li data-i18n="news_8">Mở đăng ký tiêm vắc xin cúm mùa</li>
+        <li data-i18n="news_9">Tư vấn sức khỏe tâm thần cộng đồng</li>
+    </ul>
+    <div class="schedule-box">
+        <h3 data-i18n="schedule_title">LỊCH TIÊM CHỦNG THÁNG 4</h3>
+        <ul>
+            <li data-i18n="schedule_1">10/04: Tiêm vaccine cho trẻ em</li>
+            <li data-i18n="schedule_2">15/04: Tiêm vaccine cúm</li>
+            <li data-i18n="schedule_3">20/04: Tiêm vaccine cho người cao tuổi</li>
+        </ul>
+    </div>
+</aside>
+
+</div>
+
+
+<div id="authModal" class="auth-modal" aria-hidden="true">
+    <div class="auth-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <button id="closeAuthModal" class="auth-modal__close" type="button" aria-label="Đóng">&times;</button>
+        <h3 id="authModalTitle">ĐĂNG NHẬP</h3>
+        <p>Đăng nhập để đặt lịch khám nhanh hơn và theo dõi thông tin cá nhân.</p>
+
+        <form class="auth-form">
+            <label for="authEmail">Email</label>
+            <input id="authEmail" type="email" placeholder="Nhập email" required>
+
+            <label for="authPassword">Mật khẩu</label>
+            <input id="authPassword" type="password" placeholder="Nhập mật khẩu" required>
+
+            <button type="submit" class="auth-btn auth-btn--primary">Đăng nhập</button>
+        </form>
+
+        <div class="auth-divider"><span>hoặc</span></div>
+
+        <div class="auth-actions">
+            <button type="button" class="auth-btn auth-btn--google">Đăng nhập bằng Google</button>
+            <button type="button" class="auth-btn auth-btn--register">Đăng ký tài khoản mới</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+
+<div class="footer-left">
+
+    <img src="../img/Ministry_of_Health_(Vietnam)_Logo.svg.png" alt="Logo BỘ Y TẾ" width="100" height="100">
+    <div class="infor">
+        <p data-i18n="footer_title">CỔNG THÔNG TIN ĐIỆN TỬ NGÀNH Y TẾ TP.HCM</p>
+        <p data-i18n="footer_phone">Số điện thoại: 028 3930 9912</p>
+        <p data-i18n="footer_email">Email: syt@tphcm.gov.vn</p>
+        <p data-i18n="footer_address">Địa chỉ: 59 Nguyễn Thị Minh Khai, Quận 1, TP.HCM</p>
+    </div>
+</div>
+
+<div class="footer-right">
+
+    <a href="https://qig.vn/" title="Công ty cổ phần phần mềm Quảng Ích" target="_blank">
+        <img src="../img/Powered-by.png" alt="Công ty cổ phần phần mềm Quảng Ích" title="Công ty cổ phần phần mềm Quảng Ích" width="113" height="33">
+    </a>
+
+</div>
+
+</footer>
+
+<script type="module" src="app.js"></script>
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
