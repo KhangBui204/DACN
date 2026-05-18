@@ -1,197 +1,61 @@
-// ===== HIỂN THỊ GIỜ =====
-function updateTime() {
-    const now = new Date();
-
-    document.getElementById("time").innerText =
-        now.toLocaleString("vi-VN");
-}
-
-setInterval(updateTime, 1000);
-
-// ===== DATA =====
-let data = [
-    {
-        name: "Sốt xuất huyết",
-        area: "Khu phố 4",
-        cases: 5,
-        date: "15/04/2024",
-        status: "processing"
-    },
-    {
-        name: "Tay chân miệng",
-        area: "Khu phố 1",
-        cases: 2,
-        date: "10/04/2024",
-        status: "done"
-    }
-];
-
-// ===== RENDER TABLE =====
-function renderTable(list) {
-
-    const tbody = document.querySelector("tbody");
-
-    tbody.innerHTML = "";
-
-    list.forEach((item, index) => {
-
-        tbody.innerHTML += `
-        <tr>
-
-            <td>${item.name}</td>
-
-            <td>${item.area}</td>
-
-            <td>${item.cases}</td>
-
-            <td>${item.date}</td>
-
-            <td>
-                <span class="status ${item.status}">
-                    ${item.status === "done"
-                        ? "Hoàn thành"
-                        : "Đang xử lý"}
-                </span>
-            </td>
-
-            <td>
-                <button onclick="deleteItem(${index})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-
-        </tr>
-        `;
+// 1. Hàm phân tích triệu chứng Sốt xuất huyết
+function evaluateSymptoms() {
+    const checkboxes = document.querySelectorAll('.symptom-check');
+    const resultDiv = document.getElementById('checkResult');
+    
+    let selectedSymptoms = [];
+    checkboxes.forEach(item => {
+        if (item.checked) {
+            selectedSymptoms.push(item.value);
+        }
     });
 
-    updateStats();
-}
+    resultDiv.style.display = "block";
 
-// ===== XÓA =====
-function deleteItem(index) {
-
-    if (confirm("Bạn muốn xóa dữ liệu này?")) {
-
-        data.splice(index, 1);
-
-        renderTable(data);
-    }
-}
-
-// ===== THỐNG KÊ =====
-function updateStats() {
-
-    document.getElementById("totalCases").innerText =
-        data.reduce((sum, item) => sum + item.cases, 0);
-
-    document.getElementById("activeOutbreaks").innerText =
-        data.filter(i => i.status === "processing").length;
-
-    document.getElementById("processedCases").innerText =
-        data.filter(i => i.status === "done").length;
-}
-
-// ===== FILTER =====
-document.getElementById("filterStatus")
-.addEventListener("change", function () {
-
-    const value = this.value;
-
-    if (value === "all") {
-        renderTable(data);
-    }
+    // Xử lý các kịch bản dựa trên số triệu chứng được tích chọn
+    if (selectedSymptoms.length === 0) {
+        resultDiv.style.background = "#f8fafc";
+        resultDiv.style.color = "#475569";
+        resultDiv.style.border = "1px solid #e2e8f0";
+        resultDiv.innerHTML = "✅ Bạn chưa chọn triệu chứng nào. Nếu có dấu hiệu mệt mỏi thất thường, hãy tiếp tục theo dõi sát sao.";
+    } 
+    else if (selectedSymptoms.includes('warning') || selectedSymptoms.length >= 3) {
+        // Trường hợp nguy cấp (Có dấu hiệu xuất huyết nặng hoặc quá nhiều triệu chứng)
+        resultDiv.style.background = "#fef2f2";
+        resultDiv.style.color = "#991b1b";
+        resultDiv.style.border = "1px solid #fee2e2";
+        resultDiv.innerHTML = "🚨 <strong>CẢNH BÁO NGUY CƠ CAO:</strong> Bạn có các dấu hiệu cảnh báo nguy hiểm của bệnh Sốt xuất huyết. Vui lòng di chuyển đến Trạm y tế Phường hoặc bệnh viện gần nhất ngay lập tức để làm xét nghiệm máu. Không tự ý uống thuốc hạ sốt Ibuprofen.";
+    } 
     else {
-
-        const filtered =
-            data.filter(i => i.status === value);
-
-        renderTable(filtered);
+        // Trường hợp nguy cơ vừa (Sốt nhẹ hoặc mới chớm đau cơ)
+        resultDiv.style.background = "#fffbeb";
+        resultDiv.style.color = "#92400e";
+        resultDiv.style.border = "1px solid #fef3c7";
+        resultDiv.innerHTML = "⚠️ <strong>NGUY CƠ TRUNG BÌNH:</strong> Các triệu chứng gợi ý khả năng cao mắc bệnh siêu vi hoặc giai đoạn đầu Sốt xuất huyết. Hãy nghỉ ngơi, uống nhiều nước (Oresol), hạ sốt bằng Paracetamol đúng liều và đến Trạm y tế kiểm tra nếu sốt không hạ sau 48h.";
     }
-});
-
-// ===== MODAL =====
-const modal = document.getElementById("caseModal");
-
-document.querySelector(".btn-add")
-.addEventListener("click", () => {
-
-    modal.classList.add("active");
-});
-
-document.getElementById("closeModal")
-.addEventListener("click", () => {
-
-    modal.classList.remove("active");
-});
-
-// CLICK NGOÀI ĐỂ ĐÓNG
-window.addEventListener("click", (e) => {
-
-    if (e.target === modal) {
-        modal.classList.remove("active");
-    }
-});
-
-// ===== THÊM DỮ LIỆU =====
-document.getElementById("saveCase")
-.addEventListener("click", () => {
-
-    const name =
-        document.getElementById("diseaseName").value;
-
-    const area =
-        document.getElementById("diseaseArea").value;
-
-    const cases =
-        document.getElementById("diseaseCases").value;
-
-    const status =
-        document.getElementById("diseaseStatus").value;
-
-    if (!name || !area || !cases || !status) {
-
-        alert("Vui lòng nhập đầy đủ thông tin!");
-
-        return;
-    }
-
-    data.unshift({
-        name,
-        area,
-        cases: parseInt(cases),
-        date: new Date().toLocaleDateString("vi-VN"),
-        status: status
-    });
-
-    renderTable(data);
-
-    modal.classList.remove("active");
-
-    // RESET INPUT
-    document.getElementById("diseaseName").value = "";
-    document.getElementById("diseaseArea").value = "";
-    document.getElementById("diseaseCases").value = "";
-    document.getElementById("diseaseStatus").value = "";
-
-    // HIỆN TOAST
-    showToast();
-});
-
-// ===== TOAST =====
-function showToast() {
-
-    const toast = document.getElementById("toast");
-
-    toast.classList.add("show");
-
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    }, 3000);
 }
 
-// ===== INIT =====
-renderTable(data);
+// 2. Hàm xử lý nộp Form phản ánh dịch bệnh
+function handleReport(event) {
+    event.preventDefault(); // Ngăn tải lại trang
 
-updateTime();
+    // Thu thập thông tin từ form báo cáo dịch bệnh
+    const reporterName = document.getElementById('reporter').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
+    const disease = document.getElementById('diseaseType').value;
+    const count = document.getElementById('patientCount').value;
+
+    // Hiển thị thông báo (Phục vụ báo cáo tính năng Đồ án Front-end)
+    alert(
+        ` GỬI BÁO CÁO DỊCH BỆNH THÀNH CÔNG!\n\n` +
+        `• Người báo cáo: ${reporterName} (${phone})\n` +
+        `• Địa điểm nghi nhiễm: ${address}\n` +
+        `• Loại dịch bệnh nghi ngờ: ${disease}\n` +
+        `• Số ca nghi mắc: ${count} người\n\n` +
+        `Thông tin đã chuyển thẳng đến Đội ngũ Y tế Dự phòng của Trạm y tế Phường để xử lý và xuống địa bàn xác minh.`
+    );
+
+    // Reset sạch form
+    document.getElementById('reportForm').reset();
+}

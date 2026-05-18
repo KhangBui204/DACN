@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chăm sóc trẻ em - Trạm Y Tế Phường 10</title>
 <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="chamsoctreem.css">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 
@@ -33,12 +34,11 @@
     <a href="../index.html" class="home-icon">
         <i class="material-symbols-outlined">home_health</i>
     </a>
-    <a href="gioi-thieu.html">GIỚI THIỆU</a>
-    <a href="tiem-chung.html">TIÊM CHỦNG</a>
-    <a href="giao-duc-suc-khoe.html">GIÁO DỤC SỨC KHỎE</a>
-    <a href="phong-chong-dich-benh.html">PHÒNG CHỐNG DỊCH BỆNH</a>
-    <a href="cham-soc-tre-em.html">CHĂM SÓC TRẺ EM</a>
-    <a href="tin-tuc.html">TIN TỨC</a>
+    <a href="gioi-thieu.html" class="menu_about">GIỚI THIỆU</a>
+    <a href="tiem-chung.html" class="menu_vaccine">TIÊM CHỦNG</a>
+    <a href="giao-duc-suc-khoe.html" class="menu_health">GIÁO DỤC SỨC KHỎE</a>
+    <a href="phong-chong-dich-benh.html" class="menu_disease">PHÒNG CHỐNG DỊCH BỆNH</a>
+    <a href="cham-soc-tre-em.html" class="menu_child">CHĂM SÓC TRẺ EM</a>
 
     <div class="lang">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="24" height="24" style="opacity:1;"><path fill="#da251d" d="M32 5H4a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h28a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4"/><path fill="#ff0" d="M19.753 16.037L18 10.642l-1.753 5.395h-5.672l4.589 3.333l-1.753 5.395L18 21.431l4.589 3.334l-1.753-5.395l4.589-3.333z"/></svg>
@@ -49,11 +49,178 @@
     </div>
 </nav>
 <div class="container">
-    <div class="content">
-        <h2>Chăm sóc trẻ em</h2>
-        <p>Hướng dẫn chăm sóc sức khỏe cho trẻ em, tiêm chủng, dinh dưỡng và theo dõi phát triển ở các giai đoạn khác nhau.</p>
-        <p>Không chỉ là khám chữa bệnh, mà còn là hỗ trợ gia đình xây dựng thói quen chăm sóc trẻ khoa học.</p>
+    <div class="demo-role-bar">
+    <div class="role-container">
+        <span>🔄 Chế độ kiểm thử đồ án:</span>
+        <select id="roleSelect" onchange="switchRole()">
+            <option value="patient">Người dân / Phụ huynh (Chỉ xem)</option>
+            <option value="owner">Người sở hữu / Nhân viên y tế (Quản lý)</option>
+        </select>
+        <span id="roleBadge" class="role-badge badge-patient">Đang xem với quyền: Bệnh nhân</span>
     </div>
+</div>
+
+<main class="pediatric-container">
+    
+    <section class="page-intro">
+        <h2>Chăm sóc trẻ em</h2>
+        <p>Hướng dẫn chăm sóc sức khỏe cho trẻ em, tiêm chủng, dinh dưỡng và theo dõi phát triển ở các giai đoạn khác nhau. Không chỉ là khám chữa bệnh, mà còn là hỗ trợ gia đình xây dựng thói quen chăm sóc trẻ khoa học.</p>
+    </section>
+
+    <div class="pediatric-grid">
+        
+        <div class="main-column">
+            
+            <div class="medical-card owner-only" id="ownerInputSection">
+                <div class="card-header owner-header">
+                    <h3>🛠️ Cập Nhật Chỉ Số Phát Triển (Dành cho Y tế phường)</h3>
+                </div>
+                <div class="card-body">
+                    <form id="growthForm" onsubmit="handleStaffUpdate(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tháng tuổi của trẻ:</label>
+                                <input type="text" id="inputAge" placeholder="Ví dụ: 9 tháng" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cân nặng (kg):</label>
+                                <input type="number" step="0.1" id="inputWeight" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Chiều cao (cm):</label>
+                                <input type="number" step="0.1" id="inputHeight" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit btn-owner">Ghi nhận vào hồ sơ</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="medical-card">
+                <div class="card-header">
+                    <h3>📊 Biểu đồ & Chỉ số phát triển của bé</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Mã hồ sơ nhi:</strong> HS-109283 | <strong>Họ tên trẻ:</strong> Nguyễn Minh Khang</p>
+                    <table id="growthTable" class="med-table">
+                        <thead>
+                            <tr>
+                                <th>Giai đoạn</th>
+                                <th>Cân nặng</th>
+                                <th>Chiều cao</th>
+                                <th>Ngày cập nhật tại trạm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sơ sinh</td>
+                                <td>3.4 kg</td>
+                                <td>51 cm</td>
+                                <td>10/10/2025</td>
+                            </tr>
+                            <tr>
+                                <td>6 tháng tuổi</td>
+                                <td>7.8 kg</td>
+                                <td>67 cm</td>
+                                <td>10/04/2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="medical-card">
+                <div class="card-header">
+                    <h3>💉 Sổ tiêm chủng điện tử của trẻ</h3>
+                </div>
+                <div class="card-body">
+                    <table class="med-table">
+                        <thead>
+                            <tr>
+                                <th>Tên vắc xin</th>
+                                <th>Mũi tiêm số</th>
+                                <th>Ngày tiêm</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BCG (Phòng lao)</td>
+                                <td>Mũi 1</td>
+                                <td>12/10/2025</td>
+                                <td><span class="badge-status status-success">Đã tiêm tại trạm</span></td>
+                            </tr>
+                            <tr>
+                                <td>Sởi - Rubella (MR)</td>
+                                <td>Mũi 1</td>
+                                <td>Dự kiến: 25/07/2026</td>
+                                <td><span class="badge-status status-warning">Chưa đến lịch</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="side-column">
+            
+            <div class="medical-card" id="patientAppointmentCard">
+                <div class="card-header">
+                    <h3>📅 Đăng ký lịch tiêm/khám</h3>
+                </div>
+                <div class="card-body">
+                    <form onsubmit="handlePatientBooking(event)">
+                        <div class="form-group">
+                            <label>Chọn dịch vụ y tế:</label>
+                            <select>
+                                <option>Tiêm chủng mở rộng quốc gia</option>
+                                <option>Khám sàng lọc dinh dưỡng nhi</option>
+                                <option>Khám bệnh thông thường</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Chọn ngày hẹn mong muốn:</label>
+                            <input type="date" required>
+                        </div>
+                        <button type="submit" class="btn-submit">Gửi phiếu đăng ký</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="medical-card owner-only" id="ownerApprovalCard">
+                <div class="card-header owner-header">
+                    <h3>📋 Danh sách đăng ký chờ duyệt</h3>
+                </div>
+                <div class="card-body">
+                    <div class="appointment-item">
+                        <p><strong>Bé:</strong> Trần Gia Bảo (7 tháng)</p>
+                        <p><strong>Yêu cầu:</strong> Tiêm chủng định kỳ</p>
+                        <div class="action-buttons">
+                            <button class="btn-small btn-owner" onclick="approveAppointment(this)">Duyệt lịch</button>
+                            <button class="btn-small btn-secondary" onclick="this.parentElement.parentElement.remove()">Từ chối</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="medical-card">
+                <div class="card-header">
+                    <h3>💡 Cẩm nang y tế phường</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="news-list">
+                        <li><a href="#">Hành trang tiêm chủng an toàn cho bé năm 2026</a></li>
+                        <li><a href="#">Cách xử lý kịp thời khi trẻ sốt mọc răng tại nhà</a></li>
+                        <li><a href="#">Bổ sung Vitamin A định kỳ tại Trạm Y Tế Phường 10</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</main>
 </div>
 <footer>
 <div class="footer-left">
@@ -67,10 +234,14 @@
 </div>
 <div class="footer-right">
     <a href="https://qig.vn/" title="Công ty cổ phần phần mềm Quảng Ích" target="_blank">
-        <img src="https://quangich.com/Powered-by.png" alt="Công ty cổ phần phần mềm Quảng Ích" width="113" height="33">
+        <img src="../img/Powered-by.png" alt="Công ty cổ phần phần mềm Quảng Ích" width="113" height="33">
     </a>
 </div>
 </footer>
-<script src="../script.js"></script>
+
+<script src="chamsoctreem.js"></script>
+<script type="module" src="../app.js"></script>
+<script type="module" src="../script-pages.js"></script>
+
 </body>
 </html>

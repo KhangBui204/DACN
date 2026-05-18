@@ -53,159 +53,143 @@
 </nav>
 <main class="container">
 
-    <!-- HEADER -->
-    <section class="content-header">
-        <h2><i class="fas fa-shield-virus"></i> QUẢN LÝ PHÒNG CHỐNG DỊCH</h2>
+   <main class="main-container">
 
-        <div class="header-actions">
-            <select id="filterStatus">
-                <option value="all">Tất cả</option>
-                <option value="processing">Đang xử lý</option>
-                <option value="done">Hoàn thành</option>
-            </select>
-
-            <button class="btn-add">
-                <i class="fas fa-plus"></i> Báo cáo ca mới
-            </button>
+    <!-- Tiêu đề & Cảnh báo dịch bệnh cấp bách -->
+    <section class="intro-box">
+        <h1>Cổng Thông Tin Phòng Chống Dịch Bệnh</h1>
+        <p>Cập nhật tình hình dịch bệnh địa phương, cẩm nang phòng ngừa và hệ thống khai báo/báo cáo ca bệnh nghi nhiễm trực thuộc Trạm y tế Phường.</p>
+        
+        <!-- Thanh thông báo khẩn (Banner cảnh báo dịch) -->
+        <div class="emergency-banner">
+            <div class="banner-flash"><i class="fa-solid fa-triangle-exclamation"></i> THÔNG BÁO KHẨN</div>
+            <p>Phường đang triển khai chiến dịch phun hóa chất diệt muỗi vằn phòng chống Sốt xuất huyết. Người dân vui lòng dọn dẹp các dụng cụ chứa nước đọng.</p>
         </div>
-
-        <!-- STATS -->
-        <section class="stats">
-
-            <div class="card red">
-                <i class="fas fa-user-injured"></i>
-                <div>
-                    <p>Tổng ca mắc</p>
-                    <h3 id="totalCases">12</h3>
-                </div>
-            </div>
-
-            <div class="card yellow">
-                <i class="fas fa-biohazard"></i>
-                <div>
-                    <p>Ổ dịch</p>
-                    <h3 id="activeOutbreaks">03</h3>
-                </div>
-            </div>
-
-            <div class="card green">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <p>Đã xử lý</p>
-                    <h3 id="processedCases">09</h3>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- NOTICE -->
-        <section class="notice">
-            <i class="fas fa-bullhorn"></i>
-            <p>
-                <strong>Khuyến cáo:</strong> Chủ động diệt lăng quăng, vệ sinh môi trường phòng chống sốt xuất huyết.
-            </p>
-        </section>
     </section>
 
-    <!-- TABLE -->
-    <section class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Dịch bệnh</th>
-                    <th>Khu vực</th>
-                    <th>Số ca</th>
-                    <th>Ngày</th>
-                    <th>Trạng thái</th>
-                    <th></th>
-                </tr>
-            </thead>
+    <!-- Khối Cẩm nang 3 dịch bệnh phổ biến (Sốt xuất huyết, Tay chân miệng, Cúm/Covid) -->
+    <section class="disease-grid">
+        <!-- Bệnh 1 -->
+        <div class="disease-card">
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop" alt="Sốt xuất huyết" class="disease-img">
+            <div class="disease-body">
+                <span class="badge danger">Cảnh báo cao</span>
+                <h3>Dịch Sốt Xuất Huyết</h3>
+                <p>Nhiễm trùng cấp tính do virus Dengue (muỗi vằn truyền bệnh). Cần diệt lăng quăng, ngủ mùng để phòng tránh.</p>
+                <ul class="symptom-list">
+                    <li><i class="fa-solid fa-circle-dot"></i> Sốt cao đột ngột 39-40°C</li>
+                    <li><i class="fa-solid fa-circle-dot"></i> Chấm xuất huyết dưới da</li>
+                </ul>
+            </div>
+        </div>
 
-            <tbody>
+        <!-- Bệnh 2 -->
+        <div class="disease-card">
+            <img src="https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=600&auto=format&fit=crop" alt="Tay chân miệng" class="disease-img">
+            <div class="disease-body">
+                <span class="badge warning">Theo dõi</span>
+                <h3>Bệnh Tay Chân Miệng</h3>
+                <p>Thường gặp ở trẻ dưới 5 tuổi. Lây lan qua đường tiêu hóa, dịch tiết. Cần khử khuẩn đồ chơi và rửa tay thường xuyên.</p>
+                <ul class="symptom-list">
+                    <li><i class="fa-solid fa-circle-dot"></i> Loét miệng, phỏng nước</li>
+                    <li><i class="fa-solid fa-circle-dot"></i> Tổn thương da ở lòng tay, chân</li>
+                </ul>
+            </div>
+        </div>
 
-                <tr>
-                    <td>Sốt xuất huyết</td>
-                    <td>Khu phố 4</td>
-                    <td>05</td>
-                    <td>15/04/2024</td>
-                    <td><span class="status processing">Đang xử lý</span></td>
-                    <td>
-                        <button><i class="fas fa-edit"></i></button>
-                        <button><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Tay chân miệng</td>
-                    <td>Khu phố 1</td>
-                    <td>02</td>
-                    <td>10/04/2024</td>
-                    <td><span class="status done">Hoàn thành</span></td>
-                    <td>
-                        <button><i class="fas fa-edit"></i></button>
-                        <button><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+        <!-- Bệnh 3 -->
+        <div class="disease-card">
+            <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=600&auto=format&fit=crop" alt="Cúm mùa" class="disease-img">
+            <div class="disease-body">
+                <span class="badge info">Mùa đông xuân</span>
+                <h3>Cúm Mùa & Hô Hấp</h3>
+                <p>Bệnh nhiễm trùng đường hô hấp cấp tính do virus cúm gây ra. Lây qua giọt bắn khi ho, hắt hơi.</p>
+                <ul class="symptom-list">
+                    <li><i class="fa-solid fa-circle-dot"></i> Ho, sổ mũi, đau họng</li>
+                    <li><i class="fa-solid fa-circle-dot"></i> Đau nhức cơ, mệt mỏi</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-<div class="modal" id="caseModal">
-
-    <div class="modal-box">
-
-        <div class="modal-header">
-            <h3><i class="fas fa-plus-circle"></i> Báo cáo ca bệnh mới</h3>
-
-            <button class="close-modal" id="closeModal">
-                <i class="fas fa-times"></i>
-            </button>
+    <!-- Khối Tiện ích tương tác (Khai báo ca bệnh & Đánh giá nguy cơ) -->
+    <section class="interactive-wrapper">
+        
+        <!-- Cột 1: Đánh giá nguy cơ nhanh bằng JS -->
+        <div class="interactive-col lookup-box">
+            <div class="box-header">
+                <h2><i class="fa-solid fa-heart-crack"></i> Tự Đánh Giá Nguy Cơ Sốt Xuất Huyết</h2>
+                <p>Chọn các triệu chứng hiện tại của bạn để hệ thống phân tích mức độ nguy hiểm</p>
+            </div>
+            
+            <div class="checker-group">
+                <label class="check-item">
+                    <input type="checkbox" class="symptom-check" value="fever"> Sốt cao liên tục trên 2 ngày
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="symptom-check" value="spots"> Có các chấm đỏ xuất huyết ngoài da
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="symptom-check" value="pain"> Đau hốc mắt, đau mỏi cơ khớp
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="symptom-check" value="warning"> Chảy máu cam/chảy máu chân răng hoặc nôn ói
+                </label>
+                
+                <button type="button" class="btn-check" onclick="evaluateSymptoms()">Phân Tích Nguy Cơ</button>
+            </div>
+            
+            <!-- Hộp hiển thị kết quả -->
+            <div id="checkResult" class="search-result"></div>
         </div>
 
-        <div class="modal-body">
-
-            <div class="form-group">
-                <label>Tên dịch bệnh</label>
-                <input type="text" id="diseaseName">
+        <!-- Cột 2: Form phản ánh/khai báo ca bệnh dịch -->
+        <div class="interactive-col form-box">
+            <div class="box-header">
+                <h2><i class="fa-solid fa-bullhorn"></i> Khai Báo / Phản Ánh Ca Bệnh Nghi Nhiễm</h2>
+                <p>Cung cấp thông tin để đội ngũ y tế phường xuống địa bàn hỗ trợ kịp thời</p>
             </div>
+            
+            <form id="reportForm" onsubmit="handleReport(event)">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="reporter">Họ tên người khai báo</label>
+                        <input type="text" id="reporter" placeholder="Nguyễn Văn A" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="phone">Số điện thoại liên hệ</label>
+                        <input type="tel" id="phone" placeholder="0901234567" required>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Khu vực</label>
-                <input type="text" id="diseaseArea">
-            </div>
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label for="address">Địa điểm nghi có dịch (Số nhà, Tổ dân phố...)</label>
+                    <input type="text" id="address" placeholder="Ví dụ: 123/4 Đường số 5, Tổ 12, Khu phố 3" required>
+                </div>
 
-            <div class="form-group">
-                <label>Số ca mắc</label>
-                <input type="number" id="diseaseCases">
-            </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="diseaseType">Nghi ngờ dịch bệnh gì?</label>
+                        <select id="diseaseType">
+                            <option value="Sốt xuất huyết">Sốt xuất huyết</option>
+                            <option value="Tay chân miệng">Tay chân miệng</option>
+                            <option value="Cúm/Hô hấp">Bệnh hô hấp lây lan mạnh</option>
+                            <option value="Khác">Khác (Ghi rõ ở phần mô tả)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="patientCount">Số người mắc (ước tính)</label>
+                        <input type="number" id="patientCount" min="1" value="1">
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Trạng thái</label>
-                <select id="diseaseStatus">
-                    <option value="">-- Chọn trạng thái --</option>
-                    <option value="processing">Đang xử lý</option>
-                    <option value="done">Hoàn thành</option>
-                </select>
-            </div>
-
-            <button class="save-btn" id="saveCase">
-                <i class="fas fa-save"></i>
-                Lưu dữ liệu
-            </button>
-
+                <button type="submit" class="btn-submit" style="background-color: #ef4444;">Gửi Phản Ánh Khẩn Cấp</button>
+            </form>
         </div>
 
-    </div>
+    </section>
 
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-    <i class="fas fa-check-circle"></i>
-    <span>Đã thêm ca bệnh mới thành công</span>
-</div>
-
+</main>
 </main>
 <footer>
 <div class="footer-left">

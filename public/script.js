@@ -1,6 +1,20 @@
 // import { loginWithGoogle, login, register, saveData, logout, onAuthStateChanged, auth } from "./app.js";
 // import { translations } from "./translations.js";
 
+window.scrollThumb = function(dir) {
+    const row = document.getElementById("thumbRow");
+    if (!row) return;
+
+    const firstThumb = row.querySelector(".thumb");
+    if (!firstThumb) return;
+
+    const cardWidth = firstThumb.offsetWidth + 10;
+    row.scrollBy({
+        left: dir * cardWidth * 2,
+        behavior: "smooth"
+    });
+};
+
 // function updateTime() {
 //     document.getElementById("time").innerText =
 //         new Date().toLocaleString("vi-VN");

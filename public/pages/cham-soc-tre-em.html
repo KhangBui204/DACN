@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chăm sóc trẻ em - Trạm Y Tế Phường 10</title>
+<link rel="stylesheet" href="chamsoctreem.css">
 <link rel="stylesheet" href="../style.css">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
@@ -47,13 +48,99 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="24" height="24" style="opacity:1;"><path fill="#00247d" d="M0 9.059V13h5.628zM4.664 31H13v-5.837zM23 25.164V31h8.335zM0 23v3.941L5.63 23zM31.337 5H23v5.837zM36 26.942V23h-5.631zM36 13V9.059L30.371 13zM13 5H4.664L13 10.837z"/><path fill="#cf1b2b" d="m25.14 23l9.712 6.801a4 4 0 0 0 .99-1.749L28.627 23zM13 23h-2.141l-9.711 6.8c.521.53 1.189.909 1.938 1.085L13 23.943zm10-10h2.141l9.711-6.8a4 4 0 0 0-1.937-1.085L23 12.057zm-12.141 0L1.148 6.2a4 4 0 0 0-.991 1.749L7.372 13z"/><path fill="#eee" d="M36 21H21v10h2v-5.836L31.335 31H32a4 4 0 0 0 2.852-1.199L25.14 23h3.487l7.215 5.052c.093-.337.158-.686.158-1.052v-.058L30.369 23H36zM0 21v2h5.63L0 26.941V27c0 1.091.439 2.078 1.148 2.8l9.711-6.8H13v.943l-9.914 6.941c.294.07.598.116.914.116h.664L13 25.163V31h2V21zM36 9a3.98 3.98 0 0 0-1.148-2.8L25.141 13H23v-.943l9.915-6.942A4 4 0 0 0 32 5h-.663L23 10.837V5h-2v10h15v-2h-5.629L36 9.059zM13 5v5.837L4.664 5H4 a4 4 0 0 0-2.852 1.2l9.711 6.8H7.372L.157 7.949A4 4 0 0 0 0 9v.059L5.628 13H0v2h15V5z"/><path fill="#cf1b2b" d="M21 15V5h-6v10H0v6h15v10h6V21h15v-6z"/></svg>
     </div>
 </nav>
-<div class="container">
-    <div class="content">
-        <h2>Chăm sóc trẻ em</h2>
-        <p>Hướng dẫn chăm sóc sức khỏe cho trẻ em, tiêm chủng, dinh dưỡng và theo dõi phát triển ở các giai đoạn khác nhau.</p>
-        <p>Không chỉ là khám chữa bệnh, mà còn là hỗ trợ gia đình xây dựng thói quen chăm sóc trẻ khoa học.</p>
-    </div>
-</div>
+<main class="main-container">
+    
+    <!-- Khối Chào mừng & Giới thiệu -->
+    <section class="intro-box">
+        <h1>Trung Tâm Chăm Sóc Sức Khỏe Nhi Khoa</h1>
+        <p>Hệ thống hỗ trợ thông tin tiêm chủng, tư vấn dinh dưỡng và đặt lịch hẹn khám trực tuyến dành cho bệnh nhân tại Trạm y tế Phường.</p>
+    </section>
+
+    <!-- Khối Dịch vụ (Grid) -->
+    <section class="services-grid">
+        <div class="card">
+            <img src="../img/OIP.jpg" alt="Tiêm Chủng Mở Rộng" class="card-image">
+            <div class="card-content">
+                <h3>Tiêm Chủng Mở Rộng</h3>
+                <p>Cập nhật phác đồ tiêm ngừa quốc gia, quản lý mũi tiêm và nhắc lịch tự động cho trẻ.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <img src="../img/OIP (1).jpg" alt="Tư Vấn Dinh Dưỡng" class="card-image">
+            <div class="card-content">
+                <h3>Tư Vấn Dinh Dưỡng</h3>
+                <p>Theo dõi biểu đồ tăng trưởng (BMI, chiều cao, cân nặng) và chẩn đoán suy dinh dưỡng.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="../img/OIP (2).jpg" alt="Khám Bệnh Định Kỳ" class="card-image">
+            <div class="card-content">
+                <h3>Khám Bệnh Định Kỳ</h3>
+                <p>Hỗ trợ đặt lịch khám sàng lọc, kiểm tra tổng quát các mốc phát triển tâm vận động.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Khối Tiện ích tương tác (Tra cứu & Đăng ký khám) -->
+    <section class="interactive-wrapper">
+        
+        <!-- Cột 1: Tra cứu lịch tiêm chủng -->
+        <div class="interactive-col lookup-box">
+            <div class="box-header">
+                <h2><i class="fa-solid fa-calendar-check"></i> Tra Cứu Lịch Tiêm Theo Tuổi</h2>
+                <p>Nhập số tháng tuổi để xem các mũi vắc-xin cần thiết cho bé</p>
+            </div>
+            <div class="search-group">
+                <input type="number" id="babyAge" placeholder="Nhập số tháng tuổi (VD: 2, 9, 12...)" min="0">
+                <button type="button" onclick="searchVaccine()"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+            </div>
+            <!-- Nơi hiển thị kết quả -->
+            <div id="searchResult" class="search-result"></div>
+        </div>
+
+        <!-- Cột 2: Form Đăng ký lịch hẹn -->
+        <div class="interactive-col form-box">
+            <div class="box-header">
+                <h2><i class="fa-solid fa-file-medical"></i> Đăng Ký Lịch Khám Online</h2>
+                <p>Điền thông tin để lấy số thứ tự hẹn trước tại Trạm y tế</p>
+            </div>
+            
+            <form id="medicalForm" onsubmit="submitForm(event)">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="parent">Họ tên phụ huynh</label>
+                        <input type="text" id="parent" placeholder="Nguyễn Văn A" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="baby">Họ tên của bé</label>
+                        <input type="text" id="baby" placeholder="Nguyễn Văn B" required>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="service">Dịch vụ y tế</label>
+                        <select id="service">
+                            <option value="Tiêm chủng định kỳ">Tiêm chủng mở rộng</option>
+                            <option value="Khám dinh dưỡng">Tư vấn dinh dưỡng</option>
+                            <option value="Khám sức khỏe tổng quát">Khám sức khỏe tổng quát</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="appointmentDate">Ngày hẹn khám</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Xác nhận đăng ký</button>
+            </form>
+        </div>
+
+    </section>
+
+</main>
 <footer>
 <div class="footer-left">
     <img src="../img/Ministry_of_Health_(Vietnam)_Logo.svg.png" alt="Logo BỘ Y TẾ" width="100" height="100">
@@ -71,6 +158,7 @@
 </div>
 </footer>
 
+<script src="chamsoctreem.js"></script>
 <script type="module" src="../app.js"></script>
 <script type="module" src="../script-pages.js"></script>
 

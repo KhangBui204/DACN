@@ -1,446 +1,334 @@
-/* ===== BACKGROUND ===== */
+/* Bắt buộc phải reset margin của body để không bị khoảng trắng 2 bên */
 body {
     margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: white;
-    color: #1f2937;
+    padding: 0;
+}
+/* Container chính */
+.main-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    overflow: visible;
 }
 
-/* ===== CONTENT ===== */
-.container {
-    padding: 25px;
+/* Phần giới thiệu */
+.intro-box {
+    text-align: center;
+    margin-bottom: 40px;
 }
 
-/* ===== HEADER ===== */
-.content-header {
-    margin-bottom: 25px;
+.intro-box h1 {
+    font-size: 2.2rem;
+    color: #0f172a;
+    margin-bottom: 12px;
+    font-weight: 700;
 }
 
-.content-header > h2 {
-    margin: 0 0 15px 0;
-    font-size: 30px;
-    color: #0d6efd;
+.intro-box p {
+    color: #64748b;
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    margin-bottom: 24px;
+}
+
+/* Thanh thông báo khẩn */
+.emergency-banner {
+    background-color: #fef2f2;
+    border-left: 5px solid #ef4444;
+    padding: 16px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
+}
+
+.banner-flash {
+    background-color: #ef4444;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    animation: pulse 2s infinite;
+}
+
+.emergency-banner p {
+    margin: 0;
+    color: #991b1b;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Khu vực thẻ dịch bệnh */
+.disease-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 50px;
+}
+
+.disease-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.disease-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.disease-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.disease-body {
+    padding: 20px 24px;
+}
+
+/* Nhãn trạng thái bệnh */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.badge.danger { background-color: #fee2e2; color: #ef4444; }
+.badge.warning { background-color: #fef3c7; color: #d97706; }
+.badge.info { background-color: #e0f2fe; color: #0369a1; }
+
+.disease-body h3 {
+    font-size: 1.3rem;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.disease-body p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+.symptom-list {
+    list-style: none;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+}
+
+.symptom-list li {
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.symptom-list li i {
+    font-size: 0.5rem;
+    color: #ef4444;
+}
+
+/* Khu vực tính năng tương tác hai cột */
+.interactive-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 30px;
+}
+
+.interactive-col {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.box-header {
+    margin-bottom: 24px;
+}
+
+.box-header h2 {
+    font-size: 1.35rem;
+    color: #0f172a;
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 6px;
 }
 
-.header-actions {
+.box-header p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* Giao diện bộ trắc nghiệm kiểm tra */
+.checker-group {
     display: flex;
-    gap: 12px;
-    align-items: center;
+    flex-direction: column;
+    gap: 14px;
     margin-bottom: 20px;
 }
 
-/* ===== SELECT ===== */
-select {
-    padding: 10px 15px;
-    border-radius: 12px;
-    border: 1px solid #dbe4f0;
-    background: white;
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-select:hover {
-    border-color: #0d6efd;
-}
-
-/* ===== BUTTON ===== */
-.btn-add {
-    background: linear-gradient(135deg, #0d6efd, #4dabff);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 6px 15px rgba(13,110,253,0.3);
-}
-
-.btn-add:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(13,110,253,0.4);
-}
-
-/* ===== STATS ===== */
-.stats {
-    display: flex;
-    justify-content: space-around;
-    gap: 15px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
-
-.card {
-    position: relative;
-    overflow: hidden;
-    padding: 15px;
-    border-radius: 15px;
-    color: white;
+.check-item {
     display: flex;
     align-items: center;
-    gap: 15px;
-    transition: 0.35s;
-    backdrop-filter: blur(10px);
-    flex: 1;
-    min-width: 150px;
-}
-
-.card:hover {
-    transform: translateY(-4px) scale(1.01);
-}
-
-.card i {
-    font-size: 28px;
-}
-
-.card h3 {
-    margin: 5px 0 0;
-    font-size: 24px;
-}
-
-.card p {
-    margin: 0;
-    opacity: 0.9;
-    font-size: 14px;
-}
-
-.card.red {
-    background: linear-gradient(135deg, #ff4d6d, #ff758f);
-}
-
-.card.yellow {
-    background: linear-gradient(135deg, #ffb703, #ffd166);
-    color: #222;
-}
-
-.card.green {
-    background: linear-gradient(135deg, #06d6a0, #38b000);
-}
-
-/* ===== NOTICE ===== */
-.notice {
-    background: rgba(255,255,255,0.65);
-    backdrop-filter: blur(12px);
-    border-left: 6px solid #ffb703;
-    padding: 18px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 15px auto;
-    max-width: 100%;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    font-size: 16px;
-}
-
-.notice i {
-    color: #ff9800;
-    font-size: 24px;
-}
-
-/* ===== TABLE ===== */
-.table-container {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(14px);
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    margin-left: auto;
-    margin-right: 0;
-    width: 100%;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background: linear-gradient(135deg, #0d6efd, #3a86ff);
-    color: white;
-    padding: 16px;
-    font-size: 15px;
-    letter-spacing: 0.5px;
-}
-
-td {
-    padding: 16px;
-    text-align: center;
-    border-bottom: 1px solid #eef2f7;
-    transition: 0.3s;
-}
-
-tr:hover td {
-    background: rgba(13,110,253,0.05);
-}
-
-/* ===== STATUS ===== */
-.status {
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    color: white;
-}
-
-.status.processing {
-    background: linear-gradient(135deg, #ff9800, #ffb703);
-}
-
-.status.done {
-    background: linear-gradient(135deg, #06d6a0, #38b000);
-}
-
-/* ===== ACTION BUTTONS ===== */
-td button {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    border: none;
-    margin: 0 4px;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #334155;
     cursor: pointer;
-    transition: 0.25s;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: background 0.2s;
+}
+
+.check-item:hover {
     background: #f1f5f9;
 }
 
-td button:hover {
-    transform: scale(1.15);
-    background: #dbeafe;
+.check-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: #ef4444;
 }
 
-td button i {
-    font-size: 15px;
-}
-
-/* ===== TOPBAR ===== */
-.topbar{
-    background:#f5f5f5;
-    background-repeat: repeat-x;
-    width: 100%;
-    margin: 0;
-    padding:5px 30px;
-    display:flex;
-    justify-content:space-between;
-    font-size:15px;
-    border-top:3px solid #0d47a1;
-    z-index: 99;
-    position: fixed;
-    top: 0;
-}
-
-
-/* ===== FOOTER ===== */
-footer{
-margin-top:40px;
-background:#f5f5f5;
-padding:20px 30px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:24px;
-font-size:14px;
-border-top:3px solid #1e4fa3;
-}
-
-.infor{
-display:flex;
-flex-direction: column;
-gap: 6px;
-font: bolder 14px sans-serif;
-line-height:1.45;
-}
-
-.infor p{
-margin:0;
-}
-
-.footer-left{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.footer-right{
+.btn-check {
+    padding: 12px;
+    background-color: #1e293b;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
-    margin-left:auto;
-    display:flex;
-    align-items:center;
+    transition: background 0.2s;
 }
 
-/* ===== ANIMATION ===== */
-.card,
-.notice,
-.table-container {
-    animation: fadeUp 0.6s ease;
+.btn-check:hover {
+    background-color: #0f172a;
 }
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* ===== MODAL ===== */
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
+/* Khối hiển thị kết quả */
+.search-result {
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
     display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    backdrop-filter: blur(5px);
+    line-height: 1.6;
 }
 
-.modal.active {
+/* Style cho Form */
+.input-row {
     display: flex;
-    animation: fadeIn 0.25s ease;
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
-.modal-box {
-    width: 420px;
-    max-width: 92%;
-    background: white;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    animation: popup 0.3s ease;
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.modal-header {
-    background: linear-gradient(135deg, #0d6efd, #4dabff);
-    color: white;
-    padding: 18px 22px;
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.input-group input, .input-group select {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.input-group input:focus, .input-group select:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); background-color: #dc2626; }
+    100% { transform: scale(1); }
+}
+
+/* Responsive di động */
+@media (max-width: 992px) {
+    .interactive-wrapper { grid-template-columns: 1fr; }
+    .input-row { flex-direction: column; gap: 16px; }
+    .emergency-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+footer {
+    width: 100%;
+    max-width: 100%;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+
+    /* Giữ nguyên phần layout bên trong của bạn */
+    padding: 20px 30px;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
+    font-size: 14px;
+    border-top: 3px solid #1e4fa3;
+    background: #f5f5f5;
+    margin-top: 40px; 
 }
 
-.modal-header h3 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.close-modal {
-    background: rgba(255,255,255,0.2);
-    border: none;
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.close-modal:hover {
-    background: rgba(255,255,255,0.35);
-    transform: rotate(90deg);
-}
-
-.modal-body {
-    padding: 25px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #374151;
-}
-
-.form-group input {
+footer {
     width: 100%;
-    padding: 13px;
-    border-radius: 14px;
-    border: 1px solid #dbe4f0;
-    font-size: 15px;
-    transition: 0.3s;
+    margin-top: 40px; 
+    
+    /* Layout bên trong */
+    padding: 20px 30px;
     box-sizing: border-box;
-}
-
-.form-group input:focus {
-    border-color: #0d6efd;
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(13,110,253,0.1);
-}
-
-.save-btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #0d6efd, #4dabff);
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(13,110,253,0.3);
-}
-
-/* ===== TOAST ===== */
-.toast {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    background: #10b981;
-    color: white;
-    padding: 16px 22px;
-    border-radius: 16px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    transform: translateX(150%);
-    transition: 0.4s;
-    z-index: 1000;
-}
-
-.toast.show {
-    transform: translateX(0);
-}
-
-.toast i {
-    font-size: 20px;
-}
-
-/* ===== ANIMATION ===== */
-@keyframes popup {
-    from {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    gap: 24px;
+    font-size: 14px;
+    border-top: 3px solid #1e4fa3;
+    background: #f5f5f5;
 }
