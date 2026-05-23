@@ -433,9 +433,16 @@ function updateUI(user) {
     }
     userInfo.innerHTML = `
       <span>Xin chào, ${user.displayName || user.email}</span>
-      <button id="btn-logout" style="margin-left:10px; cursor:pointer;">Đăng xuất</button>
+      <button id="btn-logout" class="btn-logout-modern" aria-label="Đăng xuất">
+        <i class="material-symbols-outlined">logout</i>
+        <span>Đăng xuất</span>
+      </button>
     `;
     document.getElementById("btn-logout").addEventListener("click", async () => {
+      // smooth micro-interaction
+      const btn = document.getElementById("btn-logout");
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
       await logout();
     });
   } else {
@@ -614,3 +621,212 @@ function init() {
     }
 
     window._init = init;
+
+  /* ── DATA ── */
+  let members = [
+    { id: 0, name: 'Nguyễn Hoàng Nam',  year: 1988, gender: 'nam', rel: 'Bản thân',   height: 172, weight: 70, blood: 'O+',  self: true },
+    { id: 1, name: 'Nguyễn Thị Mai',    year: 1990, gender: 'nữ',  rel: 'Vợ/Chồng',  height: 158, weight: 52, blood: 'A+' },
+    { id: 2, name: 'Nguyễn Minh Khôi',  year: 2015, gender: 'nam', rel: 'Con',        height: 120, weight: 22, blood: '' },
+  ];
+  let nextId = 3;
+ 
+  const services = [
+    { id: 'gp',     icon: '🩺', name: 'Khám tổng quát',   sub: 'Đa khoa' },
+    { id: 'blood',  icon: '🩸', name: 'Xét nghiệm máu',   sub: 'Huyết học' },
+    { id: 'refill', icon: '💊', name: 'Tái khám & thuốc', sub: 'Nội khoa' },
+    { id: 'ecg',    icon: '❤️', name: 'Điện tim (ECG)',    sub: 'Tim mạch' },
+    { id: 'vac',    icon: '💉', name: 'Tiêm chủng',        sub: 'Phòng ngừa' },
+    { id: 'dental', icon: '🦷', name: 'Răng miệng',        sub: 'Nha khoa' },
+  ];
+ 
+  const slots = ['07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','13:30','14:00','14:30','15:00'];
+  const disabledSlots = ['07:30', '09:00', '13:30'];
+ 
+  let sel = { patient: 0, date: null, dateLabel: null, time: null };
+  let confirmed = false;
+ 
+  /* ── HELPERS ── */
+  function getDays() {
+    const DAY_LABELS = ['CN','T2','T3','T4','T5','T6','T7'];
+    const today = new Date();
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      return {
+        day: DAY_LABELS[d.getDay()],
+        num: d.getDate(),
+        iso: d.toISOString().split('T')[0],
+        full: d.toLocaleDateString('vi-VN'),
+        hasSlots: i < 5,
+      };
+    });
+  }
+ 
+  function calcBMI(h, w) {
+    if (!h || !w) return '';
+    return 'BMI ' + (w / Math.pow(h / 100, 2)).toFixed(1);
+  }
+ 
+  /* ── RENDER PATIENTS ── */
+  function renderPatients() {
+    const grid = document.getElementById('patientGrid');
+    const currentYear = new Date().getFullYear();
+    grid.innerHTML = members.map(m => {
+      const age = currentYear - m.year;
+      const bmi = calcBMI(m.height, m.weight);
+      const isSel = sel.patient === m.id;
+      return `
+        <div class="patient-option${isSel ? ' selected' : ''}" onclick="selectPatient(${m.id})">
+          <div class="po-top">
+            <div>
+              <div class="po-name">${m.name}</div>
+              <div class="po-meta">${age} tuổi · ${m.gender}${m.blood ? ' · ' + m.blood : ''}</div>
+              <div class="po-meta">${m.height ? m.height + 'cm' : ''}${m.weight ? ' · ' + m.weight + 'kg' : ''}${bmi ? ' · ' + bmi : ''}</div>
+            </div>
+            <div class="po-right">
+              <span class="po-tag">${m.rel}</span>
+              <div class="po-check">${isSel ? '<i class="ti ti-check" style="font-size:10px"></i>' : ''}</div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+ 
+  /* ── RENDER SERVICES ── */
+  function renderServices() {
+    document.getElementById('serviceGrid').innerHTML = services.map(s => `
+      <div class="service-card${sel.service === s.id ? ' selected' : ''}" onclick="selectService('${s.id}')">
+        <span class="sc-icon">${s.icon}</span>
+        <div>
+          <div class="sc-name">${s.name}</div>
+          <div class="sc-sub">${s.sub}</div>
+        </div>
+        ${sel.service === s.id ? '<i class="ti ti-check" style="margin-left:auto;font-size:16px;color:var(--green)"></i>' : ''}
+      </div>`).join('');
+  }
+ 
+  /* ── RENDER DATES ── */
+  function renderDates() {
+    const days = getDays();
+    document.getElementById('dateRow').innerHTML = days.map(d => `
+      <div class="date-item${sel.date === d.iso ? ' selected' : ''}" onclick="selectDate('${d.iso}','${d.full}')">
+        <div class="d-day">${d.day}</div>
+        <div class="d-num">${d.num}</div>
+        ${d.hasSlots ? '<div class="d-dot"></div>' : ''}
+      </div>`).join('');
+  }
+ 
+  /* ── RENDER TIMES ── */
+  function renderTimes() {
+    document.getElementById('timeGrid').innerHTML = slots.map(t => {
+      const dis = disabledSlots.includes(t);
+      return `<div class="time-slot${dis ? ' disabled' : ''}${sel.time === t ? ' selected' : ''}" onclick="selectTime('${t}')">${t}</div>`;
+    }).join('');
+  }
+ 
+  /* ── SELECTION HANDLERS ── */
+  function selectPatient(id) { sel.patient = id; renderPatients(); updateSummary(); }
+  function selectDate(iso, full) { sel.date = iso; sel.dateLabel = full; renderDates(); updateSummary(); }
+  function selectTime(t) { sel.time = t; renderTimes(); updateSummary(); }
+ 
+  /* ── SUMMARY ── */
+  function buildSummaryHTML() {
+    const m = members.find(x => x.id === sel.patient);
+    return `
+      <div class="summary-row"><span class="summary-label">Bệnh nhân</span><span class="summary-val">${m.name}</span></div>
+      <div class="summary-row"><span class="summary-label">Ngày khám</span><span class="summary-val">${sel.dateLabel}</span></div>
+      <div class="summary-row"><span class="summary-label">Giờ khám</span><span class="summary-val">${sel.time}</span></div>
+      <div class="summary-row"><span class="summary-label">Địa điểm</span><span class="summary-val">Trạm YT Phường 5, Q.3</span></div>`;
+  }
+ 
+  function updateSummary() {
+    if (!confirmed) return;
+    if (sel.date && sel.time) {
+      document.getElementById('summaryCard').style.display = 'block';
+      document.getElementById('summaryContent').innerHTML = buildSummaryHTML();
+    }
+  }
+ 
+  /* ── SUBMIT ── */
+  function handleSubmit() {
+    if (!sel.date || !sel.time) {
+      alert('Vui lòng chọn đầy đủ ngày và giờ khám.');
+      return;
+    }
+    if (!confirmed) {
+      confirmed = true;
+      document.getElementById('summaryCard').style.display = 'block';
+      document.getElementById('summaryContent').innerHTML = buildSummaryHTML();
+      document.getElementById('submitText').textContent = 'Xác nhận đặt lịch';
+      document.getElementById('summaryCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    // Generate appointment code
+    const code = 'AP-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    document.getElementById('apptCode').textContent = code;
+    document.getElementById('successSummary').innerHTML = buildSummaryHTML();
+    document.getElementById('mainFlow').classList.add('hidden');
+    document.getElementById('successScreen').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+ 
+  /* ── RESET ── */
+  function resetAll() {
+    sel = { patient: 0, date: null, dateLabel: null, time: null };
+    confirmed = false;
+    document.getElementById('mainFlow').classList.remove('hidden');
+    document.getElementById('successScreen').classList.remove('show');
+    document.getElementById('summaryCard').style.display = 'none';
+    document.getElementById('submitText').textContent = 'Xem xác nhận';
+    document.getElementById('noteInput').value = '';
+    renderAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+ 
+  /* ── MODAL ── */
+  function openModal() {
+    document.getElementById('memberModal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('memberModal').classList.remove('open');
+    ['mName', 'mYear', 'mHeight', 'mWeight', 'mAllergy'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('mGender').value = 'nam';
+    document.getElementById('mRel').value = 'Bố';
+    document.getElementById('mBlood').value = '';
+  }
+  function saveMember() {
+    const name = document.getElementById('mName').value.trim();
+    const year = parseInt(document.getElementById('mYear').value);
+    if (!name || !year || year < 1920 || year > new Date().getFullYear()) {
+      alert('Vui lòng nhập đúng tên và năm sinh.');
+      return;
+    }
+    members.push({
+      id: nextId++,
+      name,
+      year,
+      gender: document.getElementById('mGender').value,
+      rel:    document.getElementById('mRel').value,
+      height: parseInt(document.getElementById('mHeight').value) || 0,
+      weight: parseInt(document.getElementById('mWeight').value) || 0,
+      blood:  document.getElementById('mBlood').value,
+      allergy: document.getElementById('mAllergy').value.trim(),
+    });
+    closeModal();
+    renderPatients();
+  }
+ 
+  // Close modal on overlay click
+  document.getElementById('memberModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+ 
+  /* ── INIT ── */
+  function renderAll() {
+    renderPatients();
+    renderDates();
+    renderTimes();
+  }
+  renderAll();
