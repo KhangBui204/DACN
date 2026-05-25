@@ -624,9 +624,67 @@ function init() {
 
   /* ── DATA ── */
   let members = [
-    { id: 0, name: 'Nguyễn Hoàng Nam',  year: 1988, gender: 'nam', rel: 'Bản thân',   height: 172, weight: 70, blood: 'O+',  self: true },
-    { id: 1, name: 'Nguyễn Thị Mai',    year: 1990, gender: 'nữ',  rel: 'Vợ/Chồng',  height: 158, weight: 52, blood: 'A+' },
-    { id: 2, name: 'Nguyễn Minh Khôi',  year: 2015, gender: 'nam', rel: 'Con',        height: 120, weight: 22, blood: '' },
+    {
+      id: 0,
+      name: 'Nguyễn Hoàng Nam',
+      year: 1988,
+      gender: 'nam',
+      rel: 'Bản thân',
+      height: 172,
+      weight: 70,
+      blood: 'O+',
+      phone: '0912 xxx 345',
+      address: 'Phường 5, Q.3',
+      patientCode: '#BN-20241',
+      self: true,
+      allergy: 'Không ghi nhận',
+      insurance: 'BHYT hộ gia đình',
+      history: [
+        { date: '12/04/2026', department: 'Nội tổng quát', doctor: 'BS. Lê Quốc Hưng', diagnosis: 'Viêm họng cấp', note: 'Kê thuốc 5 ngày, hẹn tái khám nếu còn sốt.', status: 'Đã hoàn tất' },
+        { date: '08/12/2025', department: 'Xét nghiệm', doctor: 'BS. Phạm Minh Tâm', diagnosis: 'Kiểm tra mỡ máu định kỳ', note: 'Các chỉ số ổn định, tiếp tục chế độ ăn giảm dầu mỡ.', status: 'Theo dõi định kỳ' },
+        { date: '21/08/2025', department: 'Tim mạch', doctor: 'BS. Trần Thanh Phúc', diagnosis: 'Đau ngực cơ năng', note: 'Điện tim bình thường, nghỉ ngơi và giảm caffeine.', status: 'Đã tư vấn' },
+      ],
+    },
+    {
+      id: 1,
+      name: 'Nguyễn Thị Mai',
+      year: 1990,
+      gender: 'nữ',
+      rel: 'Vợ/Chồng',
+      height: 158,
+      weight: 52,
+      blood: 'A+',
+      phone: '0908 xxx 221',
+      address: 'Phường 10, Q.3',
+      patientCode: '#BN-20242',
+      allergy: 'Dị ứng hải sản nhẹ',
+      insurance: 'BHYT doanh nghiệp',
+      history: [
+        { date: '03/05/2026', department: 'Sản phụ khoa', doctor: 'BS. Nguyễn Bích Vân', diagnosis: 'Khám phụ khoa định kỳ', note: 'Kết quả bình thường, tái khám sau 6 tháng.', status: 'Đã hoàn tất' },
+        { date: '17/01/2026', department: 'Da liễu', doctor: 'BS. Võ Thanh Hà', diagnosis: 'Viêm da tiếp xúc', note: 'Bôi thuốc 7 ngày, tránh mỹ phẩm có hương liệu.', status: 'Đã cấp thuốc' },
+        { date: '28/09/2025', department: 'Tiêm chủng', doctor: 'BS. Đinh Thu Trang', diagnosis: 'Nhắc vaccine cúm mùa', note: 'Đã tiêm 1 mũi, theo dõi phản ứng 24 giờ.', status: 'Đã tiêm' },
+      ],
+    },
+    {
+      id: 2,
+      name: 'Nguyễn Minh Khôi',
+      year: 2015,
+      gender: 'nam',
+      rel: 'Con',
+      height: 120,
+      weight: 22,
+      blood: '',
+      phone: 'Liên hệ qua phụ huynh',
+      address: 'Phường 10, Q.3',
+      patientCode: '#BN-20243',
+      allergy: 'Dị ứng bụi nhà',
+      insurance: 'BHYT trẻ em',
+      history: [
+        { date: '14/04/2026', department: 'Nhi khoa', doctor: 'BS. Hồ Gia Bảo', diagnosis: 'Cảm siêu vi', note: 'Uống nhiều nước, nghỉ học 2 ngày.', status: 'Đã hoàn tất' },
+        { date: '02/02/2026', department: 'Tai mũi họng', doctor: 'BS. Phan Tường Vy', diagnosis: 'Viêm mũi dị ứng', note: 'Rửa mũi bằng nước muối sinh lý mỗi ngày.', status: 'Theo dõi tại nhà' },
+        { date: '19/11/2025', department: 'Nhi khoa', doctor: 'BS. Lương Huy Nam', diagnosis: 'Khám dinh dưỡng', note: 'Tăng thêm sữa và bữa phụ buổi chiều.', status: 'Tái khám sau 3 tháng' },
+      ],
+    },
   ];
   let nextId = 3;
  
@@ -665,6 +723,114 @@ function init() {
   function calcBMI(h, w) {
     if (!h || !w) return '';
     return 'BMI ' + (w / Math.pow(h / 100, 2)).toFixed(1);
+  }
+
+  function getInitials(name) {
+    return name
+      .trim()
+      .split(/\s+/)
+      .slice(-2)
+      .map(part => part.charAt(0).toUpperCase())
+      .join('');
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function getSelectedMember() {
+    return members.find(x => x.id === sel.patient);
+  }
+
+  function updatePatientHeader() {
+    const member = getSelectedMember();
+    if (!member) return;
+
+    const avatar = document.getElementById('patientAvatar');
+    const name = document.getElementById('patientName');
+    const address = document.getElementById('patientAddress');
+    const meta = document.getElementById('patientMeta');
+    const code = document.getElementById('patientCode');
+
+    if (avatar) avatar.textContent = getInitials(member.name);
+    if (name) name.textContent = member.name;
+    if (address) {
+      address.innerHTML = `<i class="ti ti-map-pin" style="font-size:11px"></i> ${member.address || 'Chưa cập nhật địa chỉ'}`;
+    }
+    if (meta) {
+      const phone = member.phone || 'Chưa cập nhật';
+      const blood = member.blood || 'Chưa rõ';
+      meta.textContent = `SĐT: ${phone} · Nhóm máu: ${blood}`;
+    }
+    if (code) code.textContent = member.patientCode || `#BN-${String(member.id).padStart(5, '0')}`;
+  }
+
+  function buildPatientFacts(member) {
+    const currentYear = new Date().getFullYear();
+    const facts = [
+      ['Quan hệ', member.rel || 'Chưa cập nhật'],
+      ['Tuổi', `${currentYear - member.year} tuổi`],
+      ['Giới tính', member.gender || 'Chưa cập nhật'],
+      ['Chiều cao / Cân nặng', `${member.height ? member.height + ' cm' : 'Chưa rõ'} / ${member.weight ? member.weight + ' kg' : 'Chưa rõ'}`],
+      ['Nhóm máu', member.blood || 'Chưa rõ'],
+      ['Liên hệ', member.phone || 'Chưa cập nhật'],
+      ['Địa chỉ', member.address || 'Chưa cập nhật'],
+      ['Bảo hiểm', member.insurance || 'Chưa cập nhật'],
+      ['Dị ứng / Bệnh nền', member.allergy || 'Không ghi nhận'],
+    ];
+
+    return facts.map(([label, value]) => `
+      <div class="detail-fact">
+        <span class="detail-fact-label">${escapeHtml(label)}</span>
+        <span class="detail-fact-value">${escapeHtml(value)}</span>
+      </div>`).join('');
+  }
+
+  function buildPatientHistory(member) {
+    if (!member.history || !member.history.length) {
+      return '<div class="history-item"><div class="history-note">Chưa có lịch sử khám cho bệnh nhân này.</div></div>';
+    }
+
+    return member.history.map(item => `
+      <div class="history-item">
+        <div class="history-top">
+          <div>
+            <div class="history-title">${escapeHtml(item.department)}</div>
+            <div class="history-date">${escapeHtml(item.date)} · ${escapeHtml(item.doctor)}</div>
+          </div>
+          <span class="history-status">${escapeHtml(item.status)}</span>
+        </div>
+        <div class="history-meta">Chẩn đoán: ${escapeHtml(item.diagnosis)}</div>
+        <div class="history-note">Ghi chú: ${escapeHtml(item.note)}</div>
+      </div>`).join('');
+  }
+
+  function openPatientDetail() {
+    const member = getSelectedMember();
+    if (!member) return;
+
+    const avatar = document.getElementById('detailAvatar');
+    const name = document.getElementById('detailName');
+    const code = document.getElementById('detailCode');
+    const facts = document.getElementById('detailFacts');
+    const history = document.getElementById('detailHistory');
+    const modal = document.getElementById('patientDetailModal');
+
+    if (avatar) avatar.textContent = getInitials(member.name);
+    if (name) name.textContent = member.name;
+    if (code) code.textContent = member.patientCode || '';
+    if (facts) facts.innerHTML = buildPatientFacts(member);
+    if (history) history.innerHTML = buildPatientHistory(member);
+    if (modal) modal.classList.add('open');
+  }
+
+  function closePatientDetail() {
+    document.getElementById('patientDetailModal')?.classList.remove('open');
   }
  
   /* ── RENDER PATIENTS ── */
@@ -725,18 +891,21 @@ function init() {
   }
  
   /* ── SELECTION HANDLERS ── */
-  function selectPatient(id) { sel.patient = id; renderPatients(); updateSummary(); }
+  function selectPatient(id) { sel.patient = id; renderPatients(); updatePatientHeader(); updateSummary(); }
   function selectDate(iso, full) { sel.date = iso; sel.dateLabel = full; renderDates(); updateSummary(); }
   function selectTime(t) { sel.time = t; renderTimes(); updateSummary(); }
  
   /* ── SUMMARY ── */
   function buildSummaryHTML() {
     const m = members.find(x => x.id === sel.patient);
+    const note = document.getElementById('noteInput')?.value.trim();
     return `
       <div class="summary-row"><span class="summary-label">Bệnh nhân</span><span class="summary-val">${m.name}</span></div>
+      <div class="summary-row"><span class="summary-label">Quan hệ</span><span class="summary-val">${m.rel}</span></div>
       <div class="summary-row"><span class="summary-label">Ngày khám</span><span class="summary-val">${sel.dateLabel}</span></div>
       <div class="summary-row"><span class="summary-label">Giờ khám</span><span class="summary-val">${sel.time}</span></div>
-      <div class="summary-row"><span class="summary-label">Địa điểm</span><span class="summary-val">Trạm YT Phường 5, Q.3</span></div>`;
+      <div class="summary-row"><span class="summary-label">Địa điểm</span><span class="summary-val">Trạm YT Phường 5, Q.1</span></div>
+      <div class="summary-row"><span class="summary-label">Ghi chú</span><span class="summary-val">${note || 'Không có'}</span></div>`;
   }
  
   function updateSummary() {
@@ -812,6 +981,9 @@ function init() {
       height: parseInt(document.getElementById('mHeight').value) || 0,
       weight: parseInt(document.getElementById('mWeight').value) || 0,
       blood:  document.getElementById('mBlood').value,
+      phone: 'Chưa cập nhật',
+      address: 'Chưa cập nhật địa chỉ',
+      patientCode: `#BN-${String(nextId + 20240).padStart(5, '0')}`,
       allergy: document.getElementById('mAllergy').value.trim(),
     });
     closeModal();
@@ -822,11 +994,27 @@ function init() {
   document.getElementById('memberModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
+  document.getElementById('patientDetailModal').addEventListener('click', function(e) {
+    if (e.target === this) closePatientDetail();
+  });
  
   /* ── INIT ── */
   function renderAll() {
     renderPatients();
     renderDates();
     renderTimes();
+    updatePatientHeader();
   }
+
+  window.selectPatient = selectPatient;
+  window.selectDate = selectDate;
+  window.selectTime = selectTime;
+  window.handleSubmit = handleSubmit;
+  window.openModal = openModal;
+  window.openPatientDetail = openPatientDetail;
+  window.closePatientDetail = closePatientDetail;
+  window.closeModal = closeModal;
+  window.saveMember = saveMember;
+  window.resetAll = resetAll;
+
   renderAll();

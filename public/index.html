@@ -160,24 +160,24 @@
 
 <aside class="left-column">
 <!-- USER HEADER -->
-  <div class="header-card">
-    <div class="avatar">NH</div>
+  <button class="header-card patient-header-trigger" type="button" onclick="openPatientDetail()">
+    <div class="avatar" id="patientAvatar">NH</div>
     <div class="user-info">
-      <h2>
-        Nguyễn Hoàng Nam
-        <span class="badge">
+      <h2 id="patientNameWrap">
+        <span id="patientName">Nguyễn Hoàng Nam</span>
+        <span class="badge" id="patientAddress">
           <i class="ti ti-map-pin" style="font-size:11px"></i>
           Phường 5, Q.3
         </span>
       </h2>
-      <p>SĐT: 0912 xxx 345 · Nhóm máu: O+</p>
+      <p id="patientMeta">SĐT: 0912 xxx 345 · Nhóm máu: O+</p>
     </div>
 
     <div class="user-meta">
       <div class="label">Mã bệnh nhân</div>
-      <div class="code">#BN-20241</div>
+      <div class="code" id="patientCode">#BN-20241</div>
     </div>
-  </div>
+  </button>
 
   <!-- MAIN FLOW -->
   <div class="main-flow" id="mainFlow">
@@ -238,17 +238,17 @@
       <i class="ti ti-check"></i>
     </div>
 
-    <div style="font-size:20px;font-weight:700;margin-bottom:.5rem">
+    <div class="success-title">
       Đặt lịch thành công!
     </div>
 
-    <div style="font-size:13px;color:var(--text-secondary);margin-bottom:1.25rem">
+    <div class="success-subtitle">
       Mã cuộc hẹn của bạn
     </div>
 
     <div class="appt-code" id="apptCode"></div>
 
-    <div class="card" style="text-align:left">
+    <div class="card success-summary-card">
       <div class="summary-box" id="successSummary"></div>
     </div>
 
@@ -360,6 +360,28 @@
 
   </div>
 </div>
+
+<div class="modal-overlay" id="patientDetailModal">
+  <div class="modal patient-detail-modal">
+    <button class="detail-close" type="button" aria-label="Đóng" onclick="closePatientDetail()">×</button>
+
+    <div class="patient-detail-head">
+      <div class="avatar patient-detail-avatar" id="detailAvatar">NH</div>
+      <div>
+        <div class="patient-detail-kicker">Hồ sơ bệnh nhân</div>
+        <h3 id="detailName">Nguyễn Hoàng Nam</h3>
+        <p id="detailCode">#BN-20241</p>
+      </div>
+    </div>
+
+    <div class="patient-detail-grid" id="detailFacts"></div>
+
+    <div class="patient-detail-section">
+      <div class="patient-detail-section-title">Lịch sử khám gần đây</div>
+      <div class="history-list" id="detailHistory"></div>
+    </div>
+  </div>
+</div>
 </aside>
 
 <!-- NOTICE -->
@@ -388,48 +410,48 @@
 <!-- THUMB NEWS -->
 <div class="thumb-wrapper">
 
-<button class="arrow" onclick="scrollThumb(-1)"><</button>
+<button class="arrow left" type="button" aria-label="Xem tin trước" onclick="scrollThumb(-1)">❮</button>
 
 <div class="thumb-row" id="thumbRow">
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d">
+<a class="thumb thumb-link" href="pages/kham-suc-khoe-nguoi-cao-tuoi.html">
+<img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d" alt="Khám sức khỏe định kỳ cho người cao tuổi">
 <p>Khám sức khỏe định kỳ cho người cao tuổi</p>
-</div>
+</a>
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1584515933487-779824d29309">
+<a class="thumb thumb-link" href="pages/phong-chong-sot-xuat-huyet.html">
+<img src="https://images.unsplash.com/photo-1584515933487-779824d29309" alt="Phòng chống sốt xuất huyết mùa mưa">
 <p>Phòng chống sốt xuất huyết mùa mưa</p>
-</div>
+</a>
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1585435557343-3b092031a831">
+<a class="thumb thumb-link" href="pages/lich-tiem-chung-tre-em.html">
+<img src="https://images.unsplash.com/photo-1585435557343-3b092031a831" alt="Lịch tiêm chủng trẻ em tháng này">
 <p>Lịch tiêm chủng trẻ em tháng này</p>
-</div>
+</a>
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118">
+<a class="thumb thumb-link" href="pages/dinh-duong-tieu-duong.html">
+<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118" alt="Dinh dưỡng cho người bệnh tiểu đường">
 <p>Dinh dưỡng cho người bệnh tiểu đường</p>
-</div>
+</a>
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1584744982491-665216d95f8b">
+<a class="thumb thumb-link" href="pages/khuyen-cao-deo-khau-trang.html">
+<img src="https://images.unsplash.com/photo-1584744982491-665216d95f8b" alt="Khuyến cáo đeo khẩu trang">
 <p>Khuyến cáo đeo khẩu trang</p>
-</div>
+</a>
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1579154204601-01588f351e67">
+<a class="thumb thumb-link" href="pages/tam-soat-ung-thu-som.html">
+<img src="https://images.unsplash.com/photo-1579154204601-01588f351e67" alt="Tầm soát ung thư sớm">
 <p>Tầm soát ung thư sớm</p>
-</div>
+</a>
 
-<div class="thumb">
-<img src="https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b">
+<a class="thumb thumb-link" href="pages/cham-soc-suc-khoe-me-va-be.html">
+<img src="https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b" alt="Chăm sóc sức khỏe mẹ và bé">
 <p>Chăm sóc sức khỏe mẹ và bé</p>
-</div>
+</a>
 
 </div>
 
-<button class="arrow right" onclick="scrollThumb(1)">❯</button>
+<button class="arrow right" type="button" aria-label="Xem tin tiếp theo" onclick="scrollThumb(1)">❯</button>
 
 </div>
 
