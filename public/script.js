@@ -810,6 +810,144 @@ function init() {
       </div>`).join('');
   }
 
+  function getPrescriptionItemsByDiagnosis(diagnosis) {
+    const text = String(diagnosis || '').toLowerCase();
+    if (text.includes('viêm họng') || text.includes('hô hấp')) {
+      return [
+        { name: 'Paracetamol 500mg', qty: '10 viên', usage: '1 viên x 3 lần/ngày sau ăn' },
+        { name: 'Alpha Chymotrypsin', qty: '10 viên', usage: '1 viên x 2 lần/ngày' }
+      ];
+    }
+    if (text.includes('viêm da')) {
+      return [
+        { name: 'Cetirizine 10mg', qty: '7 viên', usage: '1 viên buổi tối' },
+        { name: 'Kem Hydrocortisone 1%', qty: '1 tuýp', usage: 'Bôi mỏng 2 lần/ngày' }
+      ];
+    }
+    if (text.includes('tim') || text.includes('đau ngực')) {
+      return [
+        { name: 'Magie B6', qty: '20 viên', usage: '1 viên x 2 lần/ngày' },
+        { name: 'Vitamin nhóm B', qty: '20 viên', usage: '1 viên/ngày sau ăn sáng' }
+      ];
+    }
+    return [
+      { name: 'Vitamin C 500mg', qty: '10 viên', usage: '1 viên/ngày sau ăn' },
+      { name: 'Nước muối sinh lý 0.9%', qty: '1 chai', usage: 'Dùng theo hướng dẫn bác sĩ' }
+    ];
+  }
+
+  function buildPrescriptionsFromHistory(member) {
+    const history = Array.isArray(member?.history) ? member.history : [];
+    return history.map((item, idx) => ({
+      id: `DT-${String(idx + 1).padStart(3, '0')}`,
+      date: item.date || '',
+      doctor: item.doctor || 'Chưa cập nhật',
+      diagnosis: item.diagnosis || 'Chưa cập nhật',
+      note: item.note || 'Không có ghi chú',
+      items: getPrescriptionItemsByDiagnosis(item.diagnosis)
+    }));
+  }
+
+  function buildPrescriptionList(member) {
+    const prescriptions = buildPrescriptionsFromHistory(member);
+    if (!prescriptions.length) {
+      return '<div class="history-item"><div class="history-note">Chưa có dữ liệu đơn thuốc cho bệnh nhân này.</div></div>';
+    }
+
+    return prescriptions.map((p, index) => `
+      <button type="button" class="prescription-item" onclick="showPrescriptionDetail(${index})">
+        <div>
+          <div class="history-title">${escapeHtml(p.id)} - ${escapeHtml(p.diagnosis)}</div>
+          <div class="prescription-meta">${escapeHtml(p.date)} · ${escapeHtml(p.doctor)}</div>
+        </div>
+        <span class="history-status">${p.items.length} thuốc</span>
+      </button>
+    `).join('');
+  }
+
+  function buildPrescriptionSupport(member) {
+    const history = Array.isArray(member?.history) ? member.history : [];
+    const latest = history[0] || null;
+    const latestDate = latest?.date || 'Chưa có lịch khám';
+    const reminder = latest
+      ? `Tái khám sau 7-14 ngày kể từ ${latestDate} hoặc sớm hơn nếu triệu chứng nặng hơn.`
+      : 'Hiện chưa có dữ liệu lịch khám để nhắc tái khám.';
+
+    return `
+      <div class="prescription-support-card">
+        <div class="patient-detail-section-title">Lưu ý dùng thuốc</div>
+        <ul class="prescription-support-list">
+          <li>Dùng thuốc đúng liều, đúng giờ theo hướng dẫn trong đơn.</li>
+          <li>Không tự ý ngưng thuốc kháng sinh khi chưa đủ liệu trình.</li>
+          <li>Nếu có phản ứng bất thường (mẩn ngứa, khó thở), liên hệ cơ sở y tế ngay.</li>
+        </ul>
+        <div class="prescription-reminder">${escapeHtml(reminder)}</div>
+      </div>
+    `;
+  }
+
+  function showPatientTab(tab) {
+    const profilePanel = document.getElementById('patientTabProfile');
+    const prescriptionPanel = document.getElementById('patientTabPrescriptions');
+    document.querySelectorAll('.patient-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
+
+    if (tab === 'prescriptions') {
+      if (profilePanel) profilePanel.style.display = 'none';
+      if (prescriptionPanel) prescriptionPanel.style.display = 'block';
+      const member = getSelectedMember();
+      const list = document.getElementById('detailPrescriptions');
+      const support = document.getElementById('prescriptionSupport');
+      if (member && list) list.innerHTML = buildPrescriptionList(member);
+      if (member && support) support.innerHTML = buildPrescriptionSupport(member);
+      closePrescriptionDetail();
+      return;
+    }
+
+    if (profilePanel) profilePanel.style.display = 'block';
+    if (prescriptionPanel) prescriptionPanel.style.display = 'none';
+  }
+
+  function showPrescriptionDetail(index) {
+    const member = getSelectedMember();
+    if (!member) return;
+    const prescriptions = buildPrescriptionsFromHistory(member);
+    const p = prescriptions[index];
+    if (!p) return;
+
+    const listEl = document.getElementById('detailPrescriptions');
+    const detailEl = document.getElementById('prescriptionDetail');
+    const dateEl = document.getElementById('prescDate');
+    const doctorEl = document.getElementById('prescDoctor');
+    const itemsEl = document.getElementById('prescItems');
+    const noteEl = document.getElementById('prescNote');
+
+    if (listEl) listEl.style.display = 'none';
+    if (detailEl) detailEl.style.display = 'block';
+    if (dateEl) dateEl.textContent = `Ngày: ${p.date}`;
+    if (doctorEl) doctorEl.textContent = `Bác sĩ: ${p.doctor}`;
+    if (itemsEl) {
+      itemsEl.innerHTML = p.items.map(med => `
+        <div class="prescription-item-row">
+          <div>
+            <strong>${escapeHtml(med.name)}</strong><br>
+            <span class="prescription-meta">${escapeHtml(med.usage)}</span>
+          </div>
+          <div>${escapeHtml(med.qty)}</div>
+        </div>
+      `).join('');
+    }
+    if (noteEl) noteEl.textContent = `Ghi chú: ${p.note}`;
+  }
+
+  function closePrescriptionDetail() {
+    const listEl = document.getElementById('detailPrescriptions');
+    const detailEl = document.getElementById('prescriptionDetail');
+    if (detailEl) detailEl.style.display = 'none';
+    if (listEl) listEl.style.display = 'grid';
+  }
+
   function openPatientDetail() {
     const member = getSelectedMember();
     if (!member) return;
@@ -826,6 +964,7 @@ function init() {
     if (code) code.textContent = member.patientCode || '';
     if (facts) facts.innerHTML = buildPatientFacts(member);
     if (history) history.innerHTML = buildPatientHistory(member);
+    showPatientTab('profile');
     if (modal) modal.classList.add('open');
   }
 
@@ -1013,6 +1152,9 @@ function init() {
   window.openModal = openModal;
   window.openPatientDetail = openPatientDetail;
   window.closePatientDetail = closePatientDetail;
+  window.showPatientTab = showPatientTab;
+  window.showPrescriptionDetail = showPrescriptionDetail;
+  window.closePrescriptionDetail = closePrescriptionDetail;
   window.closeModal = closeModal;
   window.saveMember = saveMember;
   window.resetAll = resetAll;
