@@ -320,7 +320,7 @@ position: relative;
 }
 
 .search{
-border:none;
+border:1px solid #ccc;
 width:450px;
 padding:10px 15px;
 border-radius:20px;
@@ -1947,9 +1947,131 @@ footer{
   .btn-save { background: linear-gradient(135deg, #3B82F6, #1D4ED8); border: none; color: #fff; }
   .btn-save:hover { background: linear-gradient(135deg, #2563EB, #1E3A8A); }
   .patient-detail-modal {
-    max-width: 560px;
+    max-width: 520px; /* a bit wider for more horizontal space */
     position: relative;
-    padding: 1.4rem;
+    padding: 1.2rem 1rem; /* increase padding slightly */
+    box-sizing: border-box;
+    height: min(85vh, 680px); /* keep modal size consistent across tabs */
+    overflow: hidden; /* panels handle their own scroll */
+  }
+  .patient-detail-tabs {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+  }
+  .patient-tab {
+    border: 1px solid var(--border-med);
+    background: #fff;
+    color: var(--text-secondary);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .patient-tab.active {
+    background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+    color: #fff;
+    border-color: transparent;
+  }
+  .patient-detail-panel {
+    padding-top: 24px;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 2px;
+    padding-bottom: 10px;  
+  }
+
+  .prescription-list {
+    display: grid;
+    gap: 10px;
+  }
+  .prescription-item {
+    width: 100%;
+    text-align: left;
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: #fafcff;
+    padding: .9rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .prescription-meta {
+    font-size: 11px;
+    color: var(--text-hint);
+    margin-top: 2px;
+  }
+  .prescription-detail {
+    margin-top: .8rem;
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: #fff;
+    padding: .9rem;
+  }
+  .prescription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: .7rem;
+  }
+  .prescription-date,
+  .prescription-doctor {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .prescription-items {
+    display: grid;
+    gap: 8px;
+    margin-bottom: .65rem;
+  }
+  .prescription-item-row {
+    border: 0.5px solid var(--border-light);
+    border-radius: 8px;
+    padding: .65rem .75rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 8px;
+    background: #fdfefe;
+  }
+  .prescription-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .prescription-support {
+    margin-top: 10px;
+  }
+  .prescription-support-card {
+    border: 0.5px dashed var(--border-med);
+    border-radius: var(--radius-md);
+    padding: .85rem .9rem;
+    background: #f8fbff;
+  }
+  .prescription-support-list {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .prescription-reminder {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--green-dark);
+    line-height: 1.45;
+    background: #eef7ff;
+    border: 0.5px solid #d6e7ff;
+    border-radius: 8px;
+    padding: .55rem .65rem;
   }
   .detail-close {
     position: absolute;
@@ -1965,14 +2087,15 @@ footer{
   .patient-detail-head {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 1rem;
-    padding-right: 2rem;
+    gap: 12px;
+    margin-bottom: 0.8rem;
+    margin-top: 5px;
+    padding-right: 1rem;
   }
   .patient-detail-avatar {
-    width: 58px;
-    height: 58px;
-    font-size: 18px;
+    width: 56px;
+    height: 56px;
+    font-size: 16px;
   }
   .patient-detail-kicker {
     font-size: 11px;
@@ -1997,7 +2120,7 @@ footer{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-bottom: 1.1rem;
+    margin-bottom: 1rem;
   }
   .detail-fact {
     background: var(--green-light);
@@ -2025,6 +2148,7 @@ footer{
     letter-spacing: .07em;
     color: var(--text-secondary);
     margin-bottom: .8rem;
+    margin-top: 5px;
   }
   .history-list {
     display: grid;

@@ -365,20 +365,48 @@
   <div class="modal patient-detail-modal">
     <button class="detail-close" type="button" aria-label="Đóng" onclick="closePatientDetail()">×</button>
 
-    <div class="patient-detail-head">
-      <div class="avatar patient-detail-avatar" id="detailAvatar">NH</div>
-      <div>
-        <div class="patient-detail-kicker">Hồ sơ bệnh nhân</div>
-        <h3 id="detailName">Nguyễn Hoàng Nam</h3>
-        <p id="detailCode">#BN-20241</p>
+    <div class="patient-detail-tabs">
+      <button type="button" class="patient-tab active" data-tab="profile" onclick="showPatientTab('profile')">Hồ sơ</button>
+      <button type="button" class="patient-tab" data-tab="prescriptions" onclick="showPatientTab('prescriptions')">Đơn thuốc</button>
+    </div>
+
+    <div class="patient-detail-panel" id="patientTabProfile">
+      <div class="patient-detail-head">
+        <div class="avatar patient-detail-avatar" id="detailAvatar">NH</div>
+        <div>
+          <div class="patient-detail-kicker">Hồ sơ bệnh nhân</div>
+          <h3 id="detailName">Nguyễn Hoàng Nam</h3>
+          <p id="detailCode">#BN-20241</p>
+        </div>
+      </div>
+
+      <div class="patient-detail-grid" id="detailFacts"></div>
+
+      <div class="patient-detail-section">
+        <div class="patient-detail-section-title">Lịch sử khám gần đây</div>
+        <div class="history-list" id="detailHistory"></div>
       </div>
     </div>
 
-    <div class="patient-detail-grid" id="detailFacts"></div>
+    <div class="patient-detail-panel" id="patientTabPrescriptions" style="display:none;">
+      <div class="patient-detail-section">
+        <div class="patient-detail-section-title">Đơn thuốc theo lịch sử khám</div>
+        <div class="prescription-list" id="detailPrescriptions"></div>
 
-    <div class="patient-detail-section">
-      <div class="patient-detail-section-title">Lịch sử khám gần đây</div>
-      <div class="history-list" id="detailHistory"></div>
+        <div class="prescription-detail" id="prescriptionDetail" style="display:none;">
+          <div class="prescription-header">
+            <div>
+              <div class="prescription-date" id="prescDate">Ngày: </div>
+              <div class="prescription-doctor" id="prescDoctor">Bác sĩ: </div>
+            </div>
+            <button type="button" class="btn-cancel" onclick="closePrescriptionDetail()">Quay lại</button>
+          </div>
+          <div class="prescription-items" id="prescItems"></div>
+          <div class="prescription-note" id="prescNote"></div>
+        </div>
+
+        <div class="prescription-support" id="prescriptionSupport"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -487,7 +515,7 @@
         <h3>TIN MỚI</h3>
     </div>
     <ul class="news-list">
-        <h3 data-i18n="news_title">TIN MỚI</h3>
+        <!-- <h3 data-i18n="news_title">TIN MỚI</h3> -->
         <li data-i18n="news_1">Khai trương phòng khám mới tại phường 10</li>
         <li data-i18n="news_2">Tư vấn miễn phí tiêm chủng mùa hè</li>
         <li data-i18n="news_3">Lịch khám sức khỏe định kỳ cho dân cư</li>
