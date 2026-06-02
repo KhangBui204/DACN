@@ -82,5 +82,5 @@ export function listenData(col, callback) {
   });
 }
 
-export { auth };
+export { auth, db };
 export { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
