@@ -1,5 +1,4 @@
-// import { loginWithGoogle, login, register, saveData, logout, onAuthStateChanged, auth } from "./app.js";
-// import { translations } from "./translations.js";
+
 
 window.scrollThumb = function(dir) {
     const row = document.getElementById("thumbRow");
@@ -15,383 +14,16 @@ window.scrollThumb = function(dir) {
     });
 };
 
-// function updateTime() {
-//     document.getElementById("time").innerText =
-//         new Date().toLocaleString("vi-VN");
-// }
-
-// setInterval(updateTime, 1000);
-// updateTime();
-
-// const loginBtn = document.querySelector(".login");
-// const authModal = document.getElementById("authModal");
-// const closeAuthModalBtn = document.getElementById("closeAuthModal");
-
-// function openAuthModal() {
-//     if (!authModal) return;
-//     authModal.classList.add("is-open");
-//     authModal.setAttribute("aria-hidden", "false");
-//     document.body.classList.add("modal-open");
-// }
-
-// function closeAuthModal() {
-//     if (!authModal) return;
-//     authModal.classList.remove("is-open");
-//     authModal.setAttribute("aria-hidden", "true");
-//     document.body.classList.remove("modal-open");
-// }
-
-// function scrollThumb(dir) {
-//     const row = document.getElementById("thumbRow");
-//     const card = row.querySelector(".thumb").offsetWidth + 10;
-
-//     row.scrollBy({
-//         left: dir * card * 2,
-//         behavior: "smooth"
-//     });
-// }
-
-// const news = [
-//     {
-//         img: "img/tin1.jpg",
-//         title: "Tin số 1",
-//         desc: "Mô tả tin số 1"
-//     },
-//     {
-//         img: "img/tin2.jpg",
-//         title: "Tin số 2",
-//         desc: "Mô tả tin số 2"
-//     },
-//     {
-//         img: "img/tin3.jpg",
-//         title: "Tin số 3",
-//         desc: "Mô tả tin số 3"
-//     },
-//     {
-//         img: "img/tin4.jpg",
-//         title: "Mô tả tin số 4",
-//         desc: "Mô tả tin số 4"
-//     }
-// ];
-
-// // Chuyển ngôn ngữ
-// let currentLang = "VI";
-
-// function applyLanguage(lang) {
-//   const t = translations[lang];
-
-//   // Header
-//   document.querySelector(".search input")?.setAttribute("placeholder", t.search_placeholder);
-//   document.querySelector(".login span") && (document.querySelector(".login span").textContent = t.btn_login);
-
-//   // Menu
-//   document.querySelector(".menu_about") && (document.querySelector(".menu_about").textContent = t.menu_about);
-//   document.querySelector(".menu_vaccine") && (document.querySelector(".menu_vaccine").textContent = t.menu_vaccine);
-//   document.querySelector(".menu_health") && (document.querySelector(".menu_health").textContent = t.menu_health);
-//   document.querySelector(".menu_disease") && (document.querySelector(".menu_disease").textContent = t.menu_disease);
-//   document.querySelector(".menu_child") && (document.querySelector(".menu_child").textContent = t.menu_child);
-
-//   // Popup đăng nhập
-//   document.querySelector("#popup-overlay h2") && (document.querySelector("#popup-overlay h2").textContent = t.login_title);
-//   document.getElementById("login-email")?.setAttribute("placeholder", t.login_email);
-//   document.getElementById("login-password")?.setAttribute("placeholder", t.login_password);
-//   document.getElementById("btn-email-login") && (document.getElementById("btn-email-login").textContent = t.login_btn);
-//   document.getElementById("btn-register") && (document.getElementById("btn-register").textContent = t.login_register);
-//   document.getElementById("btn-google") && (document.getElementById("btn-google").textContent = t.login_google);
-
-//   // Popup đăng ký
-//   document.querySelector("#popup-register h2") && (document.querySelector("#popup-register h2").textContent = t.register_title);
-//   document.getElementById("register-name")?.setAttribute("placeholder", t.register_name);
-//   document.getElementById("register-email")?.setAttribute("placeholder", t.register_email);
-//   document.getElementById("register-password")?.setAttribute("placeholder", t.register_password);
-//   document.getElementById("register-confirm")?.setAttribute("placeholder", t.register_confirm);
-//   document.getElementById("btn-submit-register") && (document.getElementById("btn-submit-register").textContent = t.register_btn);
-
-//   // Cập nhật opacity nút VI/EN
-//   document.querySelector(".VN").style.opacity = lang === "VI" ? "1" : "0.5";
-//   document.querySelector(".EN").style.opacity = lang === "EN" ? "1" : "0.5";
-
-//   currentLang = lang;
-// }
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     const thumbs = document.querySelectorAll(".thumb");
-//     const mainImage = document.getElementById("mainImage");
-//     const slideContent = document.getElementById("slideContent");
-//     const mainSlide = document.getElementById("slideText");
-
-//     console.log("✅ load event fired");
-//     console.log("VN button:", document.querySelector(".VN"));
-//     console.log("EN button:", document.querySelector(".EN"));
-
-//     console.log("translations:", translations);
-
-//     document.querySelector(".VN").addEventListener("click", () => {
-//         console.log("click VN");
-//         applyLanguage("VI");
-//     });
-//     document.querySelector(".EN").addEventListener("click", () => {
-//         console.log("click EN");
-//         applyLanguage("EN");
-//     });
-
-//     applyLanguage("VI");
-
-//     // Lấy ảnh và tiêu đề từ thumbnail đầu tiên
-//     if (thumbs.length > 0) {
-//         const firstThumb = thumbs[0];
-//         const firstImgSrc = firstThumb.querySelector("img").src;
-//         const firstText = firstThumb.querySelector("p").innerText;
-
-//         mainImage.src = firstImgSrc;
-//         mainImage.style.display = "block";
-//         slideContent.innerHTML = `
-//             <h2>${firstText}</h2>
-//             <p>Thông tin chi tiết về ${firstText}</p>
-//         `;
-//     }
-
-//     thumbs.forEach(thumb => {
-//         thumb.addEventListener("mouseenter", () => {
-//     const imgSrc = thumb.querySelector("img").src;
-//     const text = thumb.querySelector("p").innerText;
-
-//     mainImage.src = imgSrc;
-//     mainImage.style.display = "block";
-
-//     slideContent.innerHTML = `
-//         <h2>${text}</h2>
-//         <p>Thông tin chi tiết về ${text}</p>
-//     `;
-// });
-
-//         thumb.addEventListener("mouseleave", () => {
-//     // Quay lại thumbnail đầu tiên khi rời chuột
-//     if (thumbs.length > 0) {
-//         const firstThumb = thumbs[0];
-//         const firstImgSrc = firstThumb.querySelector("img").src;
-//         const firstText = firstThumb.querySelector("p").innerText;
-        
-//         mainImage.src = firstImgSrc;
-//         mainImage.style.display = "block";
-//         slideContent.innerHTML = `
-//             <h2>${firstText}</h2>
-//             <p>Thông tin chi tiết về ${firstText}</p>
-//         `;
-//     }
-// });
-//     });
-
-//     const dateInput = document.querySelector('input[type="date"]');
-//     const timeInput = document.querySelector('input[type="time"]');
-
-//     const disableKeyboardEntry = (input) => {
-//         if (!input) return;
-//         input.addEventListener('keydown', (e) => {
-//             const allowKeys = ['Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'];
-//             if (!allowKeys.includes(e.key)) {
-//                 e.preventDefault();
-//             }
-//         });
-//         input.addEventListener('keypress', (e) => {
-//             e.preventDefault();
-//         });
-//         input.addEventListener('paste', (e) => e.preventDefault());
-//         input.addEventListener('drop', (e) => e.preventDefault());
-//     };
-
-//     disableKeyboardEntry(dateInput);
-//     disableKeyboardEntry(timeInput);
-
-//     const familySelect = document.getElementById("family");
-//     const nameInput = document.getElementById("name");
-//     const phoneInput = document.getElementById("phone");
-//     const emailInput = document.getElementById("email");
-
-//     if (familySelect) {
-//         familySelect.addEventListener("change", (e) => {
-//             if (e.target.value === "self") {
-//                 const userProfile = JSON.parse(localStorage.getItem("userProfile") || "{}");
-                
-//                 if (userProfile.name) {
-//                     nameInput.value = userProfile.name;
-//                     nameInput.disabled = true;
-//                 } else {
-//                     nameInput.value = "";
-//                     nameInput.disabled = true;
-//                 }
-
-//                 if (userProfile.phone) {
-//                     phoneInput.value = userProfile.phone;
-//                     phoneInput.disabled = true;
-//                 } else {
-//                     phoneInput.value = "";
-//                     phoneInput.disabled = true;
-//                 }
-
-//                 if (userProfile.email) {
-//                     emailInput.value = userProfile.email;
-//                     emailInput.disabled = true;
-//                 } else {
-//                     emailInput.value = "";
-//                     emailInput.disabled = true;
-//                 }
-//             } else {
-//                 nameInput.value = "";
-//                 nameInput.disabled = false;
-//                 phoneInput.value = "";
-//                 phoneInput.disabled = false;
-//                 emailInput.value = "";
-//                 emailInput.disabled = false;
-//             }
-//         });
-//     }
-// });
-
-
-// // Mở popup khi click nút đăng nhập
-// document.querySelector(".login").addEventListener("click", () => {
-//   document.getElementById("popup-overlay").style.display = "block";
-//   document.getElementById("error-msg").textContent = "";
-// });
-
-// // Đóng popup đăng nhập
-// document.getElementById("popup-close").addEventListener("click", () => {
-//   document.getElementById("popup-overlay").style.display = "none";
-// });
-
-// // Đóng khi click ra ngoài popup đăng nhập
-// document.getElementById("popup-overlay").addEventListener("click", (e) => {
-//   if (e.target === document.getElementById("popup-overlay")) {
-//     document.getElementById("popup-overlay").style.display = "none";
-//   }
-// });
-
-// // Đăng nhập Email/Password
-// document.getElementById("btn-email-login").addEventListener("click", async () => {
-//   const email = document.getElementById("login-email").value;
-//   const password = document.getElementById("login-password").value;
-
-//   if (!email || !password) {
-//     document.getElementById("error-msg").textContent = "Vui lòng nhập email và mật khẩu!";
-//     return;
-//   }
-//   try {
-//     const user = await login(email, password);
-//     document.getElementById("popup-overlay").style.display = "none";
-//   } catch (err) {
-//     document.getElementById("error-msg").textContent = "Sai email hoặc mật khẩu!";
-//   }
-// });
-
-// // Nút "Đăng ký tài khoản mới" → chuyển sang popup đăng ký
-// document.getElementById("btn-register").addEventListener("click", () => {
-//   document.getElementById("popup-overlay").style.display = "none";
-//   document.getElementById("popup-register").style.display = "block";
-//   document.getElementById("register-error").textContent = "";
-// });
-
-// // Đăng nhập Google
-// document.getElementById("btn-google").addEventListener("click", async () => {
-//   try {
-//     const user = await loginWithGoogle();
-//     document.getElementById("popup-overlay").style.display = "none";
-//   } catch (err) {
-//     document.getElementById("error-msg").textContent = "Đăng nhập Google thất bại!";
-//   }
-// });
-
-// // Đóng popup đăng ký
-// document.getElementById("register-close").addEventListener("click", () => {
-//   document.getElementById("popup-register").style.display = "none";
-// });
-
-// // Đóng khi click ra ngoài popup đăng ký
-// document.getElementById("popup-register").addEventListener("click", (e) => {
-//   if (e.target === document.getElementById("popup-register")) {
-//     document.getElementById("popup-register").style.display = "none";
-//   }
-// });
-
-// // Quay lại popup đăng nhập
-// document.getElementById("back-to-login").addEventListener("click", () => {
-//   document.getElementById("popup-register").style.display = "none";
-//   document.getElementById("popup-overlay").style.display = "block";
-// });
-
-// // Xử lý đăng ký
-// document.getElementById("btn-submit-register").addEventListener("click", async () => {
-//   const name = document.getElementById("register-name").value;
-//   const email = document.getElementById("register-email").value;
-//   const password = document.getElementById("register-password").value;
-//   const confirm = document.getElementById("register-confirm").value;
-
-//   if (!name || !email || !password || !confirm) {
-//     document.getElementById("register-error").textContent = "Vui lòng điền đầy đủ thông tin!";
-//     return;
-//   }
-//   if (password !== confirm) {
-//     document.getElementById("register-error").textContent = "Mật khẩu xác nhận không khớp!";
-//     return;
-//   }
-//   if (password.length < 6) {
-//     document.getElementById("register-error").textContent = "Mật khẩu phải ít nhất 6 ký tự!";
-//     return;
-//   }
-//   try {
-//     const user = await register(email, password);
-//     await saveData("users", user.uid, {
-//       name: name,
-//       email: email,
-//       createdAt: new Date().toISOString()
-//     });
-//     alert("Đăng ký thành công! Xin chào " + name);
-//     document.getElementById("popup-register").style.display = "none";
-//   } catch (err) {
-//     if (err.code === "auth/email-already-in-use") {
-//       document.getElementById("register-error").textContent = "Email này đã được dùng!";
-//     } else {
-//       document.getElementById("register-error").textContent = err.message;
-//     }
-//   }
-// });
-
-// // Cập nhật UI sau khi đăng nhập/đăng xuất
-// function updateUI(user) {
-//   const btnLogin = document.querySelector(".login");
-//   if (user) {
-//     btnLogin.style.display = "none";
-//     let userInfo = document.getElementById("user-info");
-//     if (!userInfo) {
-//       userInfo = document.createElement("div");
-//       userInfo.id = "user-info";
-//       btnLogin.parentNode.insertBefore(userInfo, btnLogin);
-//     }
-//     userInfo.innerHTML = `
-//       <span>Xin chào, ${user.displayName || user.email}</span>
-//       <button id="btn-logout" style="margin-left:10px; cursor:pointer;">Đăng xuất</button>
-//     `;
-//     document.getElementById("btn-logout").addEventListener("click", async () => {
-//       await logout();
-//     });
-//   } else {
-//     btnLogin.style.display = "block";
-//     const userInfo = document.getElementById("user-info");
-//     if (userInfo) userInfo.remove();
-//   }
-// }
-
-// onAuthStateChanged(auth, (user) => {
-//   updateUI(user);
-// });
-
-
-
-// console.log("VN button:", document.querySelector(".VN"));
-// console.log("EN button:", document.querySelector(".EN"));
-
-import { loginWithGoogle, login, register, saveData, logout, onAuthStateChanged, auth } from "./app.js";
+import { loginWithGoogle, login, register, saveData, logout, onAuthStateChanged, auth, db } from "./app.js";
 import { translations } from "./translations.js";
+import {
+  collection, query, where,
+  onSnapshot, doc, runTransaction,
+  serverTimestamp, Timestamp, addDoc, getDoc, setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const ALL_SLOTS = ['07:30','08:00','08:30','09:00','09:30','10:00',
+                   '10:30','11:00','13:30','14:00','14:30','15:00'];
 
 let currentLang = "VI";
 
@@ -421,10 +53,77 @@ function applyLanguage(lang) {
   }
 }
 
+
+
+async function loadUserProfile(user) {
+  const userRef = doc(db, 'users', user.uid);
+  let userData = null;
+
+  try {
+    const snap = await getDoc(userRef);
+
+    if (snap.exists()) {
+      userData = snap.data();
+    } else {
+      // Lần đầu đăng nhập — tạo profile mới với mã bệnh nhân random
+      const patientCode = '#BN-' + Math.floor(10000 + Math.random() * 90000);
+      userData = {
+        name: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        phone: 'Chưa cập nhật',
+        address: 'Chưa cập nhật',
+        patientCode: patientCode,
+        createdAt: new Date().toISOString(),
+      };
+      await setDoc(userRef, userData);
+    }
+
+    // Cập nhật lên header
+    const nameEl = document.getElementById('patientName');
+    const metaEl = document.getElementById('patientMeta');
+    const codeEl = document.getElementById('patientCode');
+    const avatarEl = document.getElementById('patientAvatar');
+    const addressEl = document.getElementById('patientAddress');
+
+    if (nameEl) nameEl.textContent = userData.name;
+    if (metaEl) metaEl.textContent = `SĐT: ${userData.phone} · Nhóm máu: Chưa rõ`;
+    if (codeEl) codeEl.textContent = userData.patientCode;
+    if (addressEl) addressEl.innerHTML = `<i class="ti ti-map-pin" style="font-size:11px"></i> ${userData.address}`;
+    if (avatarEl) {
+      avatarEl.textContent = userData.name
+        .trim().split(/\s+/).slice(-2)
+        .map(p => p[0].toUpperCase()).join('');
+    }
+
+    // Cập nhật member[0] (Bản thân) với thông tin thật
+    if (members && members.length > 0) {
+      members[0].name = userData.name;
+      members[0].phone = userData.phone;
+      members[0].address = userData.address;
+      members[0].patientCode = userData.patientCode;
+      renderPatients();
+    }
+
+  } catch (err) {
+    console.error('Lỗi load profile:', err);
+  }
+}
+
 function updateUI(user) {
   const btnLogin = document.querySelector(".login");
+  const mainFlow = document.getElementById("mainFlow");
+  const loginPrompt = document.getElementById("loginPrompt");
+  const patientHeader = document.getElementById("patientHeader");
+
   if (user) {
     btnLogin.style.display = "none";
+    if (mainFlow) mainFlow.style.display = "block";
+    if (loginPrompt) loginPrompt.style.display = "none";
+    if (patientHeader) patientHeader.style.display = "block";
+
+    // Load thông tin user từ Firestore
+    loadUserProfile(user);
+
     let userInfo = document.getElementById("user-info");
     if (!userInfo) {
       userInfo = document.createElement("div");
@@ -439,7 +138,6 @@ function updateUI(user) {
       </button>
     `;
     document.getElementById("btn-logout").addEventListener("click", async () => {
-      // smooth micro-interaction
       const btn = document.getElementById("btn-logout");
       btn.disabled = true;
       btn.style.opacity = "0.7";
@@ -447,6 +145,10 @@ function updateUI(user) {
     });
   } else {
     btnLogin.style.display = "block";
+    if (mainFlow) mainFlow.style.display = "none";
+    if (loginPrompt) loginPrompt.style.display = "block";
+    if (patientHeader) patientHeader.style.display = "none";
+
     const userInfo = document.getElementById("user-info");
     if (userInfo) userInfo.remove();
   }
@@ -697,11 +399,12 @@ function init() {
     { id: 'dental', icon: '🦷', name: 'Răng miệng',        sub: 'Nha khoa' },
   ];
  
-  const slots = ['07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','13:30','14:00','14:30','15:00'];
-  const disabledSlots = ['07:30', '09:00', '13:30'];
+  
  
   let sel = { patient: 0, date: null, dateLabel: null, time: null };
   let confirmed = false;
+  let slotStatusMap = {};
+  let unsubscribeSlots = null;
  
   /* ── HELPERS ── */
   function getDays() {
@@ -771,25 +474,87 @@ function init() {
   }
 
   function buildPatientFacts(member) {
-    const currentYear = new Date().getFullYear();
-    const facts = [
-      ['Quan hệ', member.rel || 'Chưa cập nhật'],
-      ['Tuổi', `${currentYear - member.year} tuổi`],
-      ['Giới tính', member.gender || 'Chưa cập nhật'],
-      ['Chiều cao / Cân nặng', `${member.height ? member.height + ' cm' : 'Chưa rõ'} / ${member.weight ? member.weight + ' kg' : 'Chưa rõ'}`],
-      ['Nhóm máu', member.blood || 'Chưa rõ'],
-      ['Liên hệ', member.phone || 'Chưa cập nhật'],
-      ['Địa chỉ', member.address || 'Chưa cập nhật'],
-      ['Bảo hiểm', member.insurance || 'Chưa cập nhật'],
-      ['Dị ứng / Bệnh nền', member.allergy || 'Không ghi nhận'],
-    ];
+  const currentYear = new Date().getFullYear();
 
-    return facts.map(([label, value]) => `
-      <div class="detail-fact">
-        <span class="detail-fact-label">${escapeHtml(label)}</span>
-        <span class="detail-fact-value">${escapeHtml(value)}</span>
-      </div>`).join('');
+  const fields = [
+    { label: 'Quan hệ',              key: 'rel',       value: member.rel,                                           editable: false },
+    { label: 'Tuổi',                 key: 'year',      value: `${currentYear - member.year} tuổi`,                  editable: false },
+    { label: 'Giới tính',            key: 'gender',    value: member.gender || 'Chưa cập nhật',                     editable: true, type: 'select', options: ['nam','nữ','khác'] },
+    { label: 'Chiều cao / Cân nặng', key: '_hw',       value: `${member.height||'?'} cm / ${member.weight||'?'} kg`, editable: false },
+    { label: 'Nhóm máu',             key: 'blood',     value: member.blood || 'Chưa rõ',                            editable: true, type: 'select', options: ['','A+','A-','B+','B-','AB+','AB-','O+','O-'] },
+    { label: 'Liên hệ',              key: 'phone',     value: member.phone || 'Chưa cập nhật',                      editable: true, type: 'text' },
+    { label: 'Địa chỉ',              key: 'address',   value: member.address || 'Chưa cập nhật',                    editable: true, type: 'text' },
+    { label: 'Bảo hiểm',             key: 'insurance', value: member.insurance || 'Chưa cập nhật',                  editable: true, type: 'text' },
+    { label: 'Dị ứng / Bệnh nền',    key: 'allergy',   value: member.allergy || 'Không ghi nhận',                   editable: true, type: 'text' },
+  ];
+
+  function cardHTML(f) {
+    const isWide = f.key === 'allergy';
+    const spanStyle = isWide ? 'grid-column:span 2' : '';
+
+    if (!f.editable) {
+      return `
+        <div class="detail-fact" style="${spanStyle}">
+          <span class="detail-fact-label">${escapeHtml(f.label)}</span>
+          <span class="detail-fact-value">${escapeHtml(String(f.value))}</span>
+        </div>`;
+    }
+
+    if (f.type === 'select') {
+      return `
+        <div class="detail-fact" style="${spanStyle}">
+          <span class="detail-fact-label">${escapeHtml(f.label)}</span>
+          <select
+            id="edit_${f.key}"
+            onchange="autoSaveFact('${f.key}', this.value)"
+            style="border:none;background:transparent;font-size:15px;font-weight:700;
+                   color:#1a3a5c;width:100%;outline:none;cursor:pointer;padding:0"
+          >
+            ${f.options.map(o => `
+              <option value="${o}" ${f.value === o ? 'selected' : ''}>
+                ${o || 'Chưa rõ'}
+              </option>`).join('')}
+          </select>
+        </div>`;
+    }
+
+    return `
+      <div class="detail-fact" style="${spanStyle}" onclick="focusEdit('${f.key}')">
+        <span class="detail-fact-label">${escapeHtml(f.label)}</span>
+        <input
+          id="edit_${f.key}"
+          type="${f.type}"
+          value="${escapeHtml(String(f.value))}"
+          onchange="autoSaveFact('${f.key}', this.value)"
+          style="border:none;background:transparent;font-size:15px;font-weight:700;
+                 color:#1a3a5c;width:100%;outline:none;cursor:pointer;padding:0"
+          placeholder="${escapeHtml(f.label)}..."
+        >
+      </div>`;
   }
+
+  return `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      ${fields.map(f => cardHTML(f)).join('')}
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:14px">
+      <button onclick="saveAllFacts()" style="
+        padding:10px 24px;border-radius:12px;
+        border:none;background:var(--primary,#4a9b8e);color:#fff;
+        font-size:14px;font-weight:600;cursor:pointer;
+        display:flex;align-items:center;gap:6px;
+      ">
+        <i class="ti ti-device-floppy"></i> Lưu thay đổi
+      </button>
+    </div>
+  `;
+}
+
+function focusEdit(key) {
+  const el = document.getElementById('edit_' + key);
+  if (el) el.focus();
+}
+window.focusEdit = focusEdit;
 
   function buildPatientHistory(member) {
     if (!member.history || !member.history.length) {
@@ -1011,28 +776,217 @@ function init() {
   }
  
   /* ── RENDER DATES ── */
-  function renderDates() {
-    const days = getDays();
-    document.getElementById('dateRow').innerHTML = days.map(d => `
-      <div class="date-item${sel.date === d.iso ? ' selected' : ''}" onclick="selectDate('${d.iso}','${d.full}')">
-        <div class="d-day">${d.day}</div>
-        <div class="d-num">${d.num}</div>
-        ${d.hasSlots ? '<div class="d-dot"></div>' : ''}
-      </div>`).join('');
+  function selectDate(iso, full) {
+  sel.date = iso;
+  sel.dateLabel = full;
+  sel.time = null;
+  renderDates();
+  updateSummary();
+
+  // Hủy listener ngày cũ
+  if (unsubscribeSlots) {
+    unsubscribeSlots();
+    unsubscribeSlots = null;
   }
+
+  slotStatusMap = {};
+  renderTimes();
+
+  // Lắng nghe real-time slots của ngày mới
+  const q = query(collection(db, 'slots'), where('date', '==', iso));
+  unsubscribeSlots = onSnapshot(q, (snapshot) => {
+    slotStatusMap = {};
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      slotStatusMap[data.time] = {
+        id: docSnap.id,
+        status: data.status,
+        lockedBy: data.lockedBy || null,
+        expiresAt: data.expiresAt || null,
+      };
+    });
+    renderTimes();
+  });
+}
+
+const dates = [];
+
+for (let i = 0; i < 7; i++) {
+  const d = new Date();
+  d.setDate(d.getDate() + i);
+
+  dates.push({
+    iso: d.toISOString().split('T')[0],
+    label: `${d.getDate()}/${d.getMonth() + 1}`,
+    full: d.toLocaleDateString('vi-VN')
+  });
+}
+
+function renderDates() {
+  const wrap = document.getElementById('dateRow');
+  if (!wrap) return;
+
+  const DAY_LABELS = ['CN','T2','T3','T4','T5','T6','T7'];
+  const today = new Date();
+
+  wrap.style.cssText = `
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+    scrollbar-width: none;
+  `;
+
+  wrap.innerHTML = dates.map((d, i) => {
+    const dateObj = new Date(d.iso);
+    const dayLabel = DAY_LABELS[dateObj.getDay()];
+    const isToday = i === 0;
+    const isSelected = sel.date === d.iso;
+
+    return `
+      <div onclick="selectDate('${d.iso}','${d.full}')" style="
+        flex: 0 0 auto;
+        width: 52px;
+        padding: 10px 0;
+        border-radius: 14px;
+        border: 2px solid ${isSelected ? 'var(--primary, linear-gradient(135deg, #60A5FA, #1D4ED8))' : '#e0e0e0'};
+        background: ${isSelected ? 'var(--primary, linear-gradient(135deg, #60A5FA, #1D4ED8))' : '#fff'};
+        color: ${isSelected ? '#fff' : '#333'};
+        text-align: center;
+        cursor: pointer;
+        transition: all .2s ease;
+        box-shadow: ${isSelected ? '0 4px 12px rgba(74,155,142,0.3)' : '0 1px 3px rgba(0,0,0,0.06)'};
+      ">
+        <div style="font-size:11px;font-weight:500;opacity:${isSelected ? '1' : '0.5'};margin-bottom:4px">
+          ${isToday ? 'Hôm nay' : dayLabel}
+        </div>
+        <div style="font-size:18px;font-weight:700;line-height:1">
+          ${dateObj.getDate()}
+        </div>
+        <div style="font-size:11px;opacity:${isSelected ? '0.85' : '0.45'};margin-top:2px">
+          Th${dateObj.getMonth() + 1}
+        </div>
+        <div style="margin-top:6px;height:5px;width:5px;border-radius:50%;background:${isSelected ? 'rgba(255,255,255,0.8)' : 'var(--primary,#4a9b8e)'};margin-left:auto;margin-right:auto;opacity:${isSelected ? '1' : '0.4'}"></div>
+      </div>
+    `;
+  }).join('');
+}
  
   /* ── RENDER TIMES ── */
   function renderTimes() {
-    document.getElementById('timeGrid').innerHTML = slots.map(t => {
-      const dis = disabledSlots.includes(t);
-      return `<div class="time-slot${dis ? ' disabled' : ''}${sel.time === t ? ' selected' : ''}" onclick="selectTime('${t}')">${t}</div>`;
-    }).join('');
+  const grid = document.getElementById('timeGrid');
+  const now = Date.now();
+  const currentUser = auth.currentUser;
+  const ALL_SLOTS = ['07:30','08:00','08:30','09:00','09:30','10:00',
+                     '10:30','11:00','13:30','14:00','14:30','15:00'];
+
+  if (!sel.date) {
+    grid.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">Vui lòng chọn ngày trước</div>';
+    return;
   }
+
+  grid.innerHTML = ALL_SLOTS.map(t => {
+    const info = slotStatusMap[t];
+    if (!info) return `<div class="time-slot disabled">${t}</div>`;
+
+    const isBooked = info.status === 'booked';
+    const isLockedByOther = info.status === 'locked'
+      && info.lockedBy !== currentUser?.uid
+      && info.expiresAt?.toMillis() > now;
+    const isSelected = sel.time === t;
+
+    if (isBooked) {
+      return `<div class="time-slot disabled" title="Đã được đặt">${t} ✗</div>`;
+    }
+    if (isLockedByOther) {
+      return `<div class="time-slot disabled" title="Đang có người giữ">${t} 🔒</div>`;
+    }
+    return `<div class="time-slot${isSelected ? ' selected' : ''}" onclick="selectTime('${t}')">${t}</div>`;
+  }).join('');
+}
  
   /* ── SELECTION HANDLERS ── */
   function selectPatient(id) { sel.patient = id; renderPatients(); updatePatientHeader(); updateSummary(); }
-  function selectDate(iso, full) { sel.date = iso; sel.dateLabel = full; renderDates(); updateSummary(); }
-  function selectTime(t) { sel.time = t; renderTimes(); updateSummary(); }
+  async function selectTime(t) {
+  if (!auth.currentUser) {
+    alert('Vui lòng đăng nhập để đặt lịch.');
+    document.getElementById('popup-overlay').style.display = 'block';
+    return;
+  }
+
+  const info = slotStatusMap[t];
+  if (!info) return;
+
+  const now = Date.now();
+  const isLockedByOther = info.status === 'locked'
+    && info.lockedBy !== auth.currentUser.uid
+    && info.expiresAt?.toMillis() > now;
+
+  if (info.status === 'booked' || isLockedByOther) {
+    alert('Khung giờ này không còn trống. Vui lòng chọn giờ khác.');
+    return;
+  }
+
+  const slotRef = doc(db, 'slots', info.id);
+  try {
+    await runTransaction(db, async (transaction) => {
+      const slotDoc = await transaction.get(slotRef);
+      const data = slotDoc.data();
+      const nowMs = Date.now();
+
+      const isAvailable = data.status === 'available';
+      const isExpired = data.status === 'locked' && data.expiresAt?.toMillis() < nowMs;
+      const isOwn = data.status === 'locked' && data.lockedBy === auth.currentUser.uid;
+
+      if (!isAvailable && !isExpired && !isOwn) {
+        throw new Error('Khung giờ vừa được người khác chọn. Vui lòng thử lại.');
+      }
+
+      transaction.update(slotRef, {
+        status: 'locked',
+        lockedBy: auth.currentUser.uid,
+        lockedAt: serverTimestamp(),
+        expiresAt: Timestamp.fromMillis(nowMs + 5 * 60 * 1000),
+      });
+    });
+
+    sel.time = t;
+    renderTimes();
+    updateSummary();
+
+    // Tự nhả lock sau 5 phút nếu chưa confirm
+    setTimeout(async () => {
+      if (sel.time === t && !confirmed) {
+        await runTransaction(db, async (transaction) => {
+          transaction.update(slotRef, {
+            status: 'available',
+            lockedBy: null,
+            lockedAt: null,
+            expiresAt: null,
+          });
+        });
+        sel.time = null;
+        renderTimes();
+        alert('Hết 5 phút giữ chỗ. Vui lòng chọn lại giờ khám.');
+      }
+    }, 5 * 60 * 1000);
+
+  } catch (err) {
+    alert(err.message || 'Không thể chọn khung giờ này.');
+  }
+}
+
+async function releaseSlot(slotId) {
+  const slotRef = doc(db, 'slots', slotId);
+  await runTransaction(db, async (transaction) => {
+    transaction.update(slotRef, {
+      status: 'available',
+      lockedBy: null,
+      lockedAt: null,
+      expiresAt: null,
+    });
+  });
+}
  
   /* ── SUMMARY ── */
   function buildSummaryHTML() {
@@ -1056,33 +1010,79 @@ function init() {
   }
  
   /* ── SUBMIT ── */
-  function handleSubmit() {
-    if (!sel.date || !sel.time) {
-      alert('Vui lòng chọn đầy đủ ngày và giờ khám.');
-      return;
-    }
-    if (!confirmed) {
-      confirmed = true;
-      document.getElementById('summaryCard').style.display = 'block';
-      document.getElementById('summaryContent').innerHTML = buildSummaryHTML();
-      document.getElementById('submitText').textContent = 'Xác nhận đặt lịch';
-      document.getElementById('summaryCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    // Generate appointment code
+  async function handleSubmit() {
+  if (!sel.date || !sel.time) {
+    alert('Vui lòng chọn đầy đủ ngày và giờ khám.');
+    return;
+  }
+  if (!confirmed) {
+    confirmed = true;
+    document.getElementById('summaryCard').style.display = 'block';
+    document.getElementById('summaryContent').innerHTML = buildSummaryHTML();
+    document.getElementById('submitText').textContent = 'Xác nhận đặt lịch';
+    document.getElementById('summaryCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const info = slotStatusMap[sel.time];
+  if (!info) { alert('Lỗi: không tìm thấy slot.'); return; }
+
+  const slotRef = doc(db, 'slots', info.id);
+  const m = members.find(x => x.id === sel.patient);
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const slotDoc = await transaction.get(slotRef);
+      const data = slotDoc.data();
+
+      if (data.lockedBy !== auth.currentUser?.uid) {
+        throw new Error('Phiên giữ chỗ đã hết hạn. Vui lòng chọn lại.');
+      }
+      if (data.expiresAt?.toMillis() < Date.now()) {
+        throw new Error('Hết thời gian giữ chỗ. Vui lòng chọn lại.');
+      }
+
+      transaction.update(slotRef, {
+        status: 'booked',
+        lockedBy: null,
+        lockedAt: null,
+        expiresAt: null,
+      });
+    });
+
+    await addDoc(collection(db, 'appointments'), {
+      slotId: info.id,
+      userId: auth.currentUser.uid,
+      patientName: m.name,
+      date: sel.date,
+      time: sel.time,
+      symptoms: document.getElementById('noteInput')?.value.trim() || '',
+      status: 'confirmed',
+      bookedAt: serverTimestamp(),
+    });
+
     const code = 'AP-' + Math.random().toString(36).substr(2, 6).toUpperCase();
     document.getElementById('apptCode').textContent = code;
     document.getElementById('successSummary').innerHTML = buildSummaryHTML();
-    document.getElementById('mainFlow').classList.add('hidden');
+    document.getElementById('mainFlow').style.display = 'none';
     document.getElementById('successScreen').classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    alert(err.message || 'Đặt lịch thất bại. Vui lòng thử lại.');
+    sel.time = null;
+    confirmed = false;
+    document.getElementById('summaryCard').style.display = 'none';
+    document.getElementById('submitText').textContent = 'Xem xác nhận';
+    renderTimes();
   }
+}
  
   /* ── RESET ── */
   function resetAll() {
     sel = { patient: 0, date: null, dateLabel: null, time: null };
     confirmed = false;
-    document.getElementById('mainFlow').classList.remove('hidden');
+    document.getElementById('mainFlow').style.display = 'block';
     document.getElementById('successScreen').classList.remove('show');
     document.getElementById('summaryCard').style.display = 'none';
     document.getElementById('submitText').textContent = 'Xem xác nhận';
@@ -1136,7 +1136,57 @@ function init() {
   document.getElementById('patientDetailModal').addEventListener('click', function(e) {
     if (e.target === this) closePatientDetail();
   });
- 
+
+
+  function autoSaveFact(key, value) {
+  const member = getSelectedMember();
+  if (!member) return;
+  if (key === 'height' || key === 'weight') {
+    member[key] = parseInt(value) || 0;
+  } else {
+    member[key] = value;
+  }
+  updatePatientHeader();
+  renderPatients();
+}
+
+async function saveAllFacts() {
+  const member = getSelectedMember();
+  if (!member) return;
+
+  const fields = ['gender','height','weight','blood','phone','address','insurance','allergy'];
+  fields.forEach(key => {
+    const el = document.getElementById('edit_' + key);
+    if (!el) return;
+    member[key] = (key === 'height' || key === 'weight')
+      ? parseInt(el.value) || 0
+      : el.value.trim();
+  });
+
+  if (member.self && auth.currentUser) {
+    try {
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await setDoc(userRef, {
+        phone:     member.phone,
+        address:   member.address,
+        insurance: member.insurance,
+        allergy:   member.allergy,
+        blood:     member.blood,
+        height:    member.height,
+        weight:    member.weight,
+        gender:    member.gender,
+      }, { merge: true });
+      alert('Đã lưu thông tin thành công!');
+    } catch (err) {
+      alert('Lỗi lưu: ' + err.message);
+    }
+  }
+
+  updatePatientHeader();
+  renderPatients();
+}
+
+
   /* ── INIT ── */
   function renderAll() {
     renderPatients();
@@ -1144,6 +1194,33 @@ function init() {
     renderTimes();
     updatePatientHeader();
   }
+
+ window.seedSlots = async function () {
+  const allSlots = ['07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','13:30','14:00','14:30','15:00','15:30'];
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    const date = d.toISOString().split('T')[0];
+
+    for (const time of allSlots) {
+      await addDoc(collection(db, 'slots'), {
+        doctorId: 'default',
+        date,
+        time,
+        status: 'available'
+      });
+    }
+  }
+
+  console.log('xong');
+};
+
+renderDates();
+
+if (dates.length > 0) {
+  selectDate(dates[0].iso, dates[0].full);
+}
 
   window.selectPatient = selectPatient;
   window.selectDate = selectDate;
@@ -1158,5 +1235,5 @@ function init() {
   window.closeModal = closeModal;
   window.saveMember = saveMember;
   window.resetAll = resetAll;
-
-  renderAll();
+  window.autoSaveFact = autoSaveFact;
+  window.saveAllFacts = saveAllFacts;
