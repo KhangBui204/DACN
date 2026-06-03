@@ -38,10 +38,10 @@ top: 0;
     border:none;
     padding:5px 5px;
     cursor:pointer;
-        
-        &:hover{
-            color:rgba(0,0,0,0.4);
-        }
+}
+
+.VN:hover{
+  color:rgba(0,0,0,0.4);
 }
 
 .EN{
@@ -50,10 +50,10 @@ top: 0;
     border:none;
     padding:5px 5px;
     cursor:pointer;
-        
-        &:hover{
-            color:rgba(0,0,0,0.4);
-        }
+}
+
+.EN:hover{
+  color:rgba(0,0,0,0.4);
 }
 
 .lang{
@@ -62,15 +62,16 @@ justify-content: flex-end;
 align-items: center;
 margin-left:auto;
 gap: 0px;
-    span{
-        color:black;
-        font-weight:bold;
-        padding: 3px 0px;
-    }
+}
 
-    svg{
-        cursor: pointer;
-    }
+.lang span{
+  color:black;
+  font-weight:bold;
+  padding: 3px 0px;
+}
+
+.lang svg{
+  cursor: pointer;
 }
 
 .menu .lang{
@@ -285,14 +286,14 @@ justify-content: center;
 flex-direction: column;
 color:white;
 gap:15px;
+}
 
-    .banner{
-        position: absolute;
-        width: 1200px;
-        height: 200px;
-        object-fit: cover;
-        z-index: 1;
-    }
+.header .banner{
+  position: absolute;
+  width: 1200px;
+  height: 200px;
+  object-fit: cover;
+  z-index: 1;
 }
 
 .logo-box{
@@ -300,11 +301,11 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:15px;
+}
 
-    .title{
-        cursor: pointer;
-        z-index: 2;
-    }
+.logo-box .title{
+  cursor: pointer;
+  z-index: 2;
 }
 
 .logo{
