@@ -14,11 +14,11 @@ window.scrollThumb = function(dir) {
     });
 };
 
-import { loginWithGoogle, login, register, saveData, logout, onAuthStateChanged, auth, db } from "./app.js";
+import { loginWithGoogle, login, register, isEmailRegistered, saveData, logout, onAuthStateChanged, auth, db } from "./app.js";
 import { translations } from "./translations.js";
 import {
   collection, query, where,
-  onSnapshot, doc, runTransaction,
+  onSnapshot, doc, runTransaction, getDocs,
   serverTimestamp, Timestamp, addDoc, getDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -228,7 +228,8 @@ function init() {
   // Popup đăng nhập
   document.querySelector(".login").addEventListener("click", () => {
     document.getElementById("popup-overlay").style.display = "block";
-    document.getElementById("error-msg").textContent = "";
+    const em = document.getElementById("error-msg");
+    if (em) { em.style.color = 'red'; em.textContent = ""; }
   });
 
   document.getElementById("popup-close").addEventListener("click", () => {
@@ -251,7 +252,8 @@ function init() {
       await login(email, password);
       document.getElementById("popup-overlay").style.display = "none";
     } catch {
-      document.getElementById("error-msg").textContent = "Sai email hoặc mật khẩu!";
+      const em = document.getElementById("error-msg");
+      if (em) { em.style.color = 'red'; em.textContent = "Sai email hoặc mật khẩu!"; }
     }
   });
 
@@ -260,7 +262,8 @@ function init() {
       await loginWithGoogle();
       document.getElementById("popup-overlay").style.display = "none";
     } catch {
-      document.getElementById("error-msg").textContent = "Đăng nhập Google thất bại!";
+      const em = document.getElementById("error-msg");
+      if (em) { em.style.color = 'red'; em.textContent = "Đăng nhập Google thất bại!"; }
     }
   });
 
@@ -297,17 +300,48 @@ function init() {
     if (password !== confirm) {
       document.getElementById("register-error").textContent = "Mật khẩu xác nhận không khớp!"; return;
     }
-    if (password.length < 6) {
-      document.getElementById("register-error").textContent = "Mật khẩu phải ít nhất 6 ký tự!"; return;
+    // Password rules: minimum 8, maximum 16 characters
+    const minLen = 8;
+    const maxLen = 16;
+    if (password.length < minLen) {
+      document.getElementById("register-error").textContent = `Mật khẩu phải có ít nhất ${minLen} ký tự!`; return;
     }
+    if (password.length > maxLen) {
+      document.getElementById("register-error").textContent = `Mật khẩu chỉ được tối đa ${maxLen} ký tự!`; return;
+    }
+    if (/\s/.test(password)) {
+      document.getElementById("register-error").textContent = "Mật khẩu không được chứa khoảng trắng!"; return;
+    }
+
+    // Pre-check email existence to provide immediate feedback
+    try {
+      const exists = await isEmailRegistered(email);
+      if (exists) {
+        document.getElementById("register-error").textContent = "Email này đã được dùng!"; return;
+      }
+    } catch (e) {
+      // If check fails, continue and rely on server-side error handling
+      console.warn('Email check failed, falling back to createUser:', e);
+    }
+
     try {
       const user = await register(email, password);
       await saveData("users", user.uid, { name, email, createdAt: new Date().toISOString() });
-      alert("Đăng ký thành công! Xin chào " + name);
+      // Đăng ký thành công: sign out ngay để yêu cầu người dùng đăng nhập thủ công
+      await logout();
       document.getElementById("popup-register").style.display = "none";
+      // Hiện popup đăng nhập và điền trước email (thông báo xanh lá)
+      const overlay = document.getElementById("popup-overlay");
+      if (overlay) overlay.style.display = "block";
+      const loginEmailEl = document.getElementById("login-email");
+      if (loginEmailEl) loginEmailEl.value = email;
+      const loginPwdEl = document.getElementById("login-password");
+      if (loginPwdEl) loginPwdEl.value = "";
+      const em = document.getElementById("error-msg");
+      if (em) { em.style.color = 'green'; em.textContent = "Đăng ký thành công — vui lòng đăng nhập."; }
     } catch (err) {
       document.getElementById("register-error").textContent =
-        err.code === "auth/email-already-in-use" ? "Email này đã được dùng!" : err.message;
+        err.code === "auth/email-already-in-use" ? "Email này đã được dùng!" : (err.message || 'Lỗi đăng ký');
     }
   });
 
@@ -1031,6 +1065,23 @@ async function releaseSlot(slotId) {
   const m = members.find(x => x.id === sel.patient);
 
   try {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      alert('Vui lòng đăng nhập để đặt lịch.');
+      return;
+    }
+
+    const todayAppointmentsQuery = query(
+      collection(db, 'appointments'),
+      where('userId', '==', userId),
+      where('date', '==', sel.date)
+    );
+    const todayAppointmentsSnap = await getDocs(todayAppointmentsQuery);
+    if (todayAppointmentsSnap.size >= 4) {
+      alert('Mỗi tài khoản chỉ được tối đa 4 lần đặt lịch mỗi ngày!');
+      return;
+    }
+
     await runTransaction(db, async (transaction) => {
       const slotDoc = await transaction.get(slotRef);
       const data = slotDoc.data();
@@ -1052,7 +1103,7 @@ async function releaseSlot(slotId) {
 
     await addDoc(collection(db, 'appointments'), {
       slotId: info.id,
-      userId: auth.currentUser.uid,
+      userId,
       patientName: m.name,
       date: sel.date,
       time: sel.time,
@@ -1222,6 +1273,102 @@ if (dates.length > 0) {
   selectDate(dates[0].iso, dates[0].full);
 }
 
+// ── CHATBOX ──────────────────────────────────────
+const chatHistory = [];
+
+function toggleChat() {
+  const box = document.getElementById('chatBox');
+  const isOpen = box.style.display === 'flex';
+  box.style.display = isOpen ? 'none' : 'flex';
+
+  if (!isOpen && chatHistory.length === 0) {
+    appendMessage('bot', 'Xin chào! 👋 Tôi là trợ lý y tế AI. Bạn có thể hỏi tôi về lịch khám, triệu chứng, hoặc các dịch vụ y tế.');
+  }
+}
+
+function appendMessage(role, text) {
+  const container = document.getElementById('chatMessages');
+  const isBot = role === 'bot';
+
+  const bubble = document.createElement('div');
+  bubble.style.cssText = `
+    max-width:80%;padding:9px 13px;border-radius:14px;
+    font-size:13px;line-height:1.5;word-break:break-word;
+    ${isBot
+      ? 'background:#f0f7f6;color:#1a3a5c;align-self:flex-start;border-bottom-left-radius:4px'
+      : 'background:var(--primary,#4a9b8e);color:#fff;align-self:flex-end;border-bottom-right-radius:4px'
+    }
+  `;
+  bubble.textContent = text;
+  container.appendChild(bubble);
+  container.scrollTop = container.scrollHeight;
+}
+
+function appendTyping() {
+  const container = document.getElementById('chatMessages');
+  const typing = document.createElement('div');
+  typing.id = 'typingIndicator';
+  typing.style.cssText = `
+    background:#f0f7f6;padding:9px 13px;border-radius:14px;
+    font-size:13px;color:#7a8fa6;align-self:flex-start;
+    border-bottom-left-radius:4px;
+  `;
+  typing.textContent = '...';
+  container.appendChild(typing);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (!auth.currentUser) {
+    appendMessage('bot', 'Vui lòng đăng nhập để sử dụng trợ lý AI. 🔒');
+    return;
+  }
+
+  input.value = '';
+  appendMessage('user', text);
+  chatHistory.push({role: 'user', content: text});
+  appendTyping();
+
+  try {
+    const GEMINI_KEY = 'AIzaSyBP9UFPl9iJE4UHnb1cAJCzXbYcIeTOAaY';
+    const contents = chatHistory.slice(-10).map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{text: m.content}]
+    }));
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{text: 'Bạn là trợ lý y tế AI của một trạm y tế phường. Hỗ trợ người dùng về đặt lịch khám, tư vấn triệu chứng cơ bản, giải thích dịch vụ y tế. Trả lời ngắn gọn, thân thiện, bằng tiếng Việt. Không chẩn đoán bệnh cụ thể.'}]
+          },
+          contents: contents,
+        })
+      }
+    );
+
+    const data = await response.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Xin lỗi, tôi không thể trả lời lúc này.';
+
+    document.getElementById('typingIndicator')?.remove();
+    appendMessage('bot', reply);
+    chatHistory.push({role: 'assistant', content: reply});
+
+  } catch (err) {
+    document.getElementById('typingIndicator')?.remove();
+    appendMessage('bot', 'Có lỗi xảy ra. Vui lòng thử lại sau.');
+  }
+}
+
+  window.toggleChat = toggleChat;
+  window.sendChat = sendChat;
   window.selectPatient = selectPatient;
   window.selectDate = selectDate;
   window.selectTime = selectTime;

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged }
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, fetchSignInMethodsForEmail }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, addDoc, onSnapshot }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -33,6 +33,17 @@ export async function loginWithGoogle() {
 export async function register(email, password) {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   return result.user;
+}
+
+// Kiểm tra email đã được đăng ký hay chưa (trả về true nếu đã có phương thức đăng nhập)
+export async function isEmailRegistered(email) {
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    return Array.isArray(methods) && methods.length > 0;
+  } catch (err) {
+    console.error('Lỗi kiểm tra email:', err);
+    return false;
+  }
 }
 
 // Đăng nhập bằng Email/Password
