@@ -11,7 +11,7 @@ exports.chatAI = functions.https.onCall(async (data, context) => {
     );
   }
 
-  const messages = data.messages;
+  const {messages} = data;
 
   if (!messages || !Array.isArray(messages)) {
     throw new functions.https.HttpsError(
@@ -33,15 +33,18 @@ exports.chatAI = functions.https.onCall(async (data, context) => {
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
         max_tokens: 1000,
-        system: "Bạn là trợ lý y tế AI của một trạm y tế phường. Nhiệm vụ: hỗ trợ người dùng về đặt lịch khám, tư vấn triệu chứng cơ bản, giải thích các dịch vụ y tế, nhắc nhở lịch tiêm chủng. Trả lời ngắn gọn, thân thiện, bằng tiếng Việt. Không chẩn đoán bệnh cụ thể.",
+        system: `Bạn là trợ lý y tế AI của một trạm y tế phường.
+Nhiệm vụ: hỗ trợ người dùng về đặt lịch khám, tư vấn triệu chứng cơ bản,
+giải thích các dịch vụ y tế, nhắc nhở lịch tiêm chủng.
+Trả lời ngắn gọn, thân thiện, bằng tiếng Việt.
+Không chẩn đoán bệnh cụ thể — khuyến khích đến khám trực tiếp nếu cần.`,
         messages: trimmed,
       }),
     });
 
     const result = await response.json();
-    const content = result.content;
-    const reply = (content && content[0] && content[0].text) ? content[0].text : "Xin lỗi, tôi không thể trả lời lúc này.";
-    return {reply: reply};
+    const reply = result.content?.[0]?.text || "Xin lỗi, tôi không thể trả lời lúc này.";
+    return {reply};
 
   } catch (err) {
     throw new functions.https.HttpsError("internal", "Lỗi kết nối AI.");
