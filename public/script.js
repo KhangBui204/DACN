@@ -1275,6 +1275,7 @@ if (dates.length > 0) {
 
 // ── CHATBOX ──────────────────────────────────────
 const chatHistory = [];
+let chatSending = false; // prevent duplicate/concurrent sends
 
 function toggleChat() {
   const box = document.getElementById('chatBox');
@@ -1289,8 +1290,12 @@ function toggleChat() {
 function appendMessage(role, text) {
   const container = document.getElementById('chatMessages');
   const isBot = role === 'bot';
+  // Deduplicate consecutive identical messages
+  const last = container.lastElementChild;
+  if (last && last.dataset && last.dataset.role === role && last.textContent === text) return;
 
   const bubble = document.createElement('div');
+  bubble.dataset.role = role;
   bubble.style.cssText = `
     max-width:80%;padding:9px 13px;border-radius:14px;
     font-size:13px;line-height:1.5;word-break:break-word;
@@ -1318,52 +1323,106 @@ function appendTyping() {
   container.scrollTop = container.scrollHeight;
 }
 
+function getBotReply(message) {
+
+  const text = message.toLowerCase();
+
+  const rules = [
+    {
+      keywords: ["đặt lịch", "đăng ký khám"],
+      reply: "Để đặt lịch khám, vui lòng chọn bệnh nhân, ngày khám và giờ khám rồi nhấn Xác nhận."
+    },
+    {
+      keywords: ["giờ làm việc", "mở cửa", "làm việc"],
+      reply: "Trạm y tế làm việc từ 07:30 đến 16:30 từ thứ Hai đến thứ Sáu."
+    },
+    {
+      keywords: ["địa chỉ", "ở đâu"],
+      reply: "Trạm Y Tế Phường 5 nằm tại địa chỉ của trạm y tế trong hệ thống."
+    },
+    {
+      keywords: ["tiêm chủng", "vaccine", "vắc xin"],
+      reply: "Trạm y tế cung cấp các dịch vụ tiêm chủng theo quy định."
+    },
+    {
+      keywords: ["khám tổng quát"],
+      reply: "Bạn có thể chọn dịch vụ Khám tổng quát trong phần Đặt lịch khám."
+    },
+    {
+      keywords: ["bảo hiểm y tế", "bảo hiểm"],
+      reply: "Vui lòng mang theo thẻ bảo hiểm y tế và CCCD khi đến khám."
+    },
+    {
+      keywords: ["sốt"],
+      reply: "Nếu sốt kéo dài hoặc trên 38.5°C, bạn nên đến cơ sở y tế để được thăm khám."
+    },
+    {
+      keywords: ["ho"],
+      reply: "Nếu ho kéo dài trên 2 tuần hoặc kèm khó thở, hãy đến cơ sở y tế để kiểm tra."
+    },
+    {
+      keywords: ["đau đầu"],
+      reply: "Đau đầu có thể do nhiều nguyên nhân. Nếu đau dữ dội hoặc kéo dài, hãy đi khám."
+    },
+  ];
+
+  for (const rule of rules) {
+    if (rule.keywords.some(keyword => text.includes(keyword))) {
+      return rule.reply;
+    }
+  }
+
+  return "Xin lỗi, tôi chưa có thông tin về câu hỏi này. Vui lòng liên hệ nhân viên y tế để được hỗ trợ.";
+}
+
 async function sendChat() {
+
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
+
   if (!text) return;
 
+  // prevent concurrent sends
+  if (chatSending) return;
+
   if (!auth.currentUser) {
-    appendMessage('bot', 'Vui lòng đăng nhập để sử dụng trợ lý AI. 🔒');
+    appendMessage('bot', 'Vui lòng đăng nhập để sử dụng trợ lý. 🔒');
     return;
   }
 
-  input.value = '';
+  // Do not allow sending the exact same user message twice in a row
+  const last = chatHistory[chatHistory.length - 1];
+  if (last && last.role === 'user' && last.content === text) {
+    // optional: give brief visual feedback
+    const inputEl = document.getElementById('chatInput');
+    if (inputEl) {
+      inputEl.style.transition = 'box-shadow 120ms';
+      inputEl.style.boxShadow = '0 0 0 3px rgba(255,165,0,0.18)';
+      setTimeout(() => { inputEl.style.boxShadow = ''; }, 250);
+    }
+    return; // block resend of identical content
+  }
   appendMessage('user', text);
-  chatHistory.push({role: 'user', content: text});
+  chatHistory.push({ role: 'user', content: text });
+
   appendTyping();
+  chatSending = true;
 
   try {
-    const GEMINI_KEY = 'AIzaSyBP9UFPl9iJE4UHnb1cAJCzXbYcIeTOAaY';
-    const contents = chatHistory.slice(-10).map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{text: m.content}]
-    }));
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          systemInstruction: {
-            parts: [{text: 'Bạn là trợ lý y tế AI của một trạm y tế phường. Hỗ trợ người dùng về đặt lịch khám, tư vấn triệu chứng cơ bản, giải thích dịch vụ y tế. Trả lời ngắn gọn, thân thiện, bằng tiếng Việt. Không chẩn đoán bệnh cụ thể.'}]
-          },
-          contents: contents,
-        })
-      }
-    );
-
-    const data = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Xin lỗi, tôi không thể trả lời lúc này.';
-
+    // local bot reply (mock) with small delay
+    await new Promise(r => setTimeout(r, 500));
+    const reply = getBotReply ? getBotReply(text) : 'Đang xử lý...';
     document.getElementById('typingIndicator')?.remove();
     appendMessage('bot', reply);
-    chatHistory.push({role: 'assistant', content: reply});
-
+    chatHistory.push({ role: 'assistant', content: reply });
+    // clear input so user can type next question
+    try { input.value = ''; } catch (e) {}
   } catch (err) {
     document.getElementById('typingIndicator')?.remove();
-    appendMessage('bot', 'Có lỗi xảy ra. Vui lòng thử lại sau.');
+    appendMessage('bot', 'Lỗi trợ lý. Vui lòng thử lại.');
+    console.error(err);
+  } finally {
+    chatSending = false;
   }
 }
 
@@ -1384,3 +1443,4 @@ async function sendChat() {
   window.resetAll = resetAll;
   window.autoSaveFact = autoSaveFact;
   window.saveAllFacts = saveAllFacts;
+  renderAll();
