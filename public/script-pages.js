@@ -2,6 +2,83 @@ import { translations } from "./translations.js";
 import { auth, onAuthStateChanged, login, loginWithGoogle, logout } from "./app.js";
 
 let currentLang = "VI";
+const LANG_STORAGE_KEY = "siteLang";
+const GOOGLE_TRANSLATE_COOKIE = "googtrans";
+const LANG_RELOAD_GUARD = "langReloadGuard";
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
+function setGoogleTranslateCookie(targetLang) {
+  const value = `/vi/${targetLang}`;
+  document.cookie = `${GOOGLE_TRANSLATE_COOKIE}=${encodeURIComponent(value)};path=/;max-age=31536000`;
+}
+
+function ensureGoogleTranslateBootstrapped() {
+  if (!document.getElementById("google_translate_element")) {
+    const holder = document.createElement("div");
+    holder.id = "google_translate_element";
+    holder.style.display = "none";
+    document.body.appendChild(holder);
+  }
+
+  if (!document.getElementById("google-translate-script")) {
+    window.googleTranslateElementInit = function () {
+      if (window.google && window.google.translate) {
+        new google.translate.TranslateElement(
+          { pageLanguage: "vi", autoDisplay: false },
+          "google_translate_element"
+        );
+      }
+    };
+
+    const script = document.createElement("script");
+    script.id = "google-translate-script";
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+}
+
+function syncGlobalLanguage(lang, shouldReload) {
+  const targetLang = lang === "EN" ? "en" : "vi";
+  const desiredCookie = `/vi/${targetLang}`;
+  const currentCookie = getCookie(GOOGLE_TRANSLATE_COOKIE);
+
+  localStorage.setItem(LANG_STORAGE_KEY, lang);
+
+  if (currentCookie === desiredCookie) {
+    sessionStorage.removeItem(LANG_RELOAD_GUARD);
+    return;
+  }
+
+  setGoogleTranslateCookie(targetLang);
+
+  if (!shouldReload) return;
+
+  const guardValue = sessionStorage.getItem(LANG_RELOAD_GUARD);
+  if (guardValue === desiredCookie) return;
+  sessionStorage.setItem(LANG_RELOAD_GUARD, desiredCookie);
+  window.location.reload();
+}
+
+function protectIconsFromTranslation() {
+  const iconSelectors = [
+    ".material-symbols-outlined",
+    ".ti",
+    ".fa-solid",
+    ".fa-regular",
+    ".fa-brands",
+    ".lang svg"
+  ];
+
+  document.querySelectorAll(iconSelectors.join(",")).forEach((el) => {
+    el.classList.add("notranslate");
+    el.setAttribute("translate", "no");
+  });
+}
 
 function ensureAuthModal() {
   let modal = document.getElementById("authModalPages");
@@ -185,15 +262,31 @@ function init() {
   setInterval(updateTime, 1000);
   updateTime();
 
+  protectIconsFromTranslation();
+  ensureGoogleTranslateBootstrapped();
+
   const btnVi = document.querySelector(".VN");
   const btnEn = document.querySelector(".EN");
-  if (btnVi) btnVi.addEventListener("click", () => applyLanguage("VI"));
-  if (btnEn) btnEn.addEventListener("click", () => applyLanguage("EN"));
+  if (btnVi) {
+    btnVi.addEventListener("click", () => {
+      applyLanguage("VI");
+      syncGlobalLanguage("VI", true);
+    });
+  }
+  if (btnEn) {
+    btnEn.addEventListener("click", () => {
+      applyLanguage("EN");
+      syncGlobalLanguage("EN", true);
+    });
+  }
 
   ensureAuthModal();
   ensureLoginButton();
   onAuthStateChanged(auth, updateAuthUI);
-  applyLanguage("VI");
+
+  const savedLang = localStorage.getItem(LANG_STORAGE_KEY) || "VI";
+  applyLanguage(savedLang);
+  syncGlobalLanguage(savedLang, true);
 }
 
 if (document.readyState === "loading") {

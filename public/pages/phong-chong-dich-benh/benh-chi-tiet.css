@@ -1,0 +1,195 @@
+:root {
+  --d-bg: #f7fbff;
+  --d-card: #ffffff;
+  --d-text: #10243b;
+  --d-sub: #47607a;
+  --d-border: #d9e6f2;
+  --d-accent: #0d6efd;
+  --d-accent-2: #0ea5a3;
+  --d-danger: #dc2626;
+}
+
+.disease-detail-page {
+  font-family: "Be Vietnam Pro", sans-serif;
+  background:
+    radial-gradient(circle at 8% 8%, #dff3ff 0%, transparent 34%),
+    radial-gradient(circle at 92% 5%, #dff9f2 0%, transparent 30%),
+    var(--d-bg);
+  padding: 28px 24px 44px;
+}
+
+.detail-hero {
+  max-width: 1160px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  background: linear-gradient(130deg, #083c74 0%, #0d6efd 54%, #0ea5a3 100%);
+  border-radius: 24px;
+  color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(13, 110, 253, 0.24);
+}
+
+.detail-hero-content {
+  padding: 32px;
+}
+
+.detail-kicker {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.detail-hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 4vw, 38px);
+  line-height: 1.2;
+}
+
+.detail-hero-content p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+.detail-actions {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-primary,
+.btn-secondary {
+  text-decoration: none;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary {
+  background: #ffffff;
+  color: #0b5ed7;
+}
+
+.btn-secondary {
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.detail-hero-image-wrap {
+  min-height: 320px;
+}
+
+.detail-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-grid {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.detail-card {
+  background: var(--d-card);
+  border: 1px solid var(--d-border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 18px rgba(15, 54, 93, 0.08);
+}
+
+.detail-card h2 {
+  margin: 0 0 12px;
+  color: var(--d-text);
+  font-size: 20px;
+}
+
+.dot-list,
+.check-list,
+.alert-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.dot-list li,
+.check-list li,
+.alert-list li {
+  margin-bottom: 9px;
+  color: #30465d;
+  line-height: 1.5;
+}
+
+.check-list li::marker {
+  content: "✓  ";
+  color: #0b7a74;
+  font-weight: 700;
+}
+
+.alert-list li::marker {
+  content: "!  ";
+  color: var(--d-danger);
+  font-weight: 700;
+}
+
+.detail-card.emergency {
+  background: linear-gradient(180deg, #fff7f7 0%, #ffffff 68%);
+}
+
+.quick-contact {
+  max-width: 1160px;
+  margin: 22px auto 0;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px dashed #95c9ff;
+  background: #edf6ff;
+}
+
+.quick-contact h3 {
+  margin: 0 0 8px;
+  color: #07345f;
+}
+
+.quick-contact p {
+  margin: 0 0 10px;
+  color: #2e4f70;
+}
+
+.quick-contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  color: #163f64;
+}
+
+@media (max-width: 960px) {
+  .detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-hero-image-wrap {
+    min-height: 220px;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

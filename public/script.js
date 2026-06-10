@@ -26,6 +26,83 @@ const ALL_SLOTS = ['07:30','08:00','08:30','09:00','09:30','10:00',
                    '10:30','11:00','13:30','14:00','14:30','15:00'];
 
 let currentLang = "VI";
+const LANG_STORAGE_KEY = "siteLang";
+const GOOGLE_TRANSLATE_COOKIE = "googtrans";
+const LANG_RELOAD_GUARD = "langReloadGuard";
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
+function setGoogleTranslateCookie(targetLang) {
+  const value = `/vi/${targetLang}`;
+  document.cookie = `${GOOGLE_TRANSLATE_COOKIE}=${encodeURIComponent(value)};path=/;max-age=31536000`;
+}
+
+function ensureGoogleTranslateBootstrapped() {
+  if (!document.getElementById("google_translate_element")) {
+    const holder = document.createElement("div");
+    holder.id = "google_translate_element";
+    holder.style.display = "none";
+    document.body.appendChild(holder);
+  }
+
+  if (!document.getElementById("google-translate-script")) {
+    window.googleTranslateElementInit = function () {
+      if (window.google && window.google.translate) {
+        new google.translate.TranslateElement(
+          { pageLanguage: "vi", autoDisplay: false },
+          "google_translate_element"
+        );
+      }
+    };
+
+    const script = document.createElement("script");
+    script.id = "google-translate-script";
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+}
+
+function protectIconsFromTranslation() {
+  const iconSelectors = [
+    ".material-symbols-outlined",
+    ".ti",
+    ".fa-solid",
+    ".fa-regular",
+    ".fa-brands",
+    ".lang svg"
+  ];
+
+  document.querySelectorAll(iconSelectors.join(",")).forEach((el) => {
+    el.classList.add("notranslate");
+    el.setAttribute("translate", "no");
+  });
+}
+
+function syncGlobalLanguage(lang, shouldReload) {
+  const targetLang = lang === "EN" ? "en" : "vi";
+  const desiredCookie = `/vi/${targetLang}`;
+  const currentCookie = getCookie(GOOGLE_TRANSLATE_COOKIE);
+
+  localStorage.setItem(LANG_STORAGE_KEY, lang);
+
+  if (currentCookie === desiredCookie) {
+    sessionStorage.removeItem(LANG_RELOAD_GUARD);
+    return;
+  }
+
+  setGoogleTranslateCookie(targetLang);
+
+  if (!shouldReload) return;
+
+  const guardValue = sessionStorage.getItem(LANG_RELOAD_GUARD);
+  if (guardValue === desiredCookie) return;
+  sessionStorage.setItem(LANG_RELOAD_GUARD, desiredCookie);
+  window.location.reload();
+}
 
 function applyLanguage(lang) {
   const t = translations[lang];
@@ -36,7 +113,7 @@ function applyLanguage(lang) {
   document.querySelector(".menu_health") && (document.querySelector(".menu_health").textContent = t.menu_health);
   document.querySelector(".menu_disease") && (document.querySelector(".menu_disease").textContent = t.menu_disease);
   document.querySelector(".menu_child") && (document.querySelector(".menu_child").textContent = t.menu_child);
-  document.querySelector(".search input")?.setAttribute("placeholder", t.search_placeholder);
+  document.querySelector(".search")?.setAttribute("placeholder", t.search_placeholder);
 
   document.querySelector(".VN").style.opacity = lang === "VI" ? "1" : "0.5";
   document.querySelector(".EN").style.opacity = lang === "EN" ? "1" : "0.5";
@@ -161,14 +238,26 @@ function updateTime() {
 
 function init() {
 
+  protectIconsFromTranslation();
+  ensureGoogleTranslateBootstrapped();
+
   // Đồng hồ
   setInterval(updateTime, 1000);
   updateTime();
 
   // Ngôn ngữ
-  document.querySelector(".VN").addEventListener("click", () => applyLanguage("VI"));
-  document.querySelector(".EN").addEventListener("click", () => applyLanguage("EN"));
-  applyLanguage("VI");
+  document.querySelector(".VN").addEventListener("click", () => {
+    applyLanguage("VI");
+    syncGlobalLanguage("VI", true);
+  });
+  document.querySelector(".EN").addEventListener("click", () => {
+    applyLanguage("EN");
+    syncGlobalLanguage("EN", true);
+  });
+
+  const savedLang = localStorage.getItem(LANG_STORAGE_KEY) || "VI";
+  applyLanguage(savedLang);
+  syncGlobalLanguage(savedLang, true);
 
   // Thumbnail slider
   const thumbs = document.querySelectorAll(".thumb");
